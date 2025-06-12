@@ -54,3 +54,17 @@ function gMail.LoadEverything(basePath)
 end
 
 gMail.LoadEverything(gMail.BaseDir)
+--Mail SCP
+gMail.LoadShared("gmailscp/entity/mailscp/shared.lua")
+gMail.LoadServer("gmailscp/entity/mailscp/init.lua")
+gMail.LoadClient("gmailscp/entity/mailscp/cl_init.lua")
+
+--Mail Swep
+gMail.LoadShared("gmailscp/entity/mail_swep/shared.lua")
+gMail.LoadServer("gmailscp/entity/mail_swep/init.lua")
+gMail.LoadClient("gmailscp/entity/mail_swep/cl_init.lua")
+
+--Mail Dropped Entity (/dropmail)
+gMail.LoadShared("gmailscp/entity/mail/shared.lua")
+gMail.LoadServer("gmailscp/entity/mail/init.lua")
+gMail.LoadClient("gmailscp/entity/mail/cl_init.lua")

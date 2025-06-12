@@ -1,0 +1,1 @@
+--The actual entity that is created when the player does /dropmail, as the SCP will give them the swep

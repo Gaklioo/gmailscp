@@ -1,0 +1,2 @@
+--The swep that the player is given for the entity, on drop it creates the entity that the person reciving the mail can use
+--Primary click: Create UI that the player can choose to click on a button that says Read
