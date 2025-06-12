@@ -3,7 +3,7 @@ AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
 function mailEnt:Initialize()
-    self:SetModel("models/props_junk/cardboard_box003a.mdl") -- Find model
+    self:SetModel("models/props_junk/cardboard_box003a.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
@@ -48,7 +48,7 @@ function mailEnt:Use(user)
     end
 
     self:SetNW2Int("Cooldown", time)
-    print("HI:)")
+
     user:Give("mail_swep", true)
 
 
@@ -63,6 +63,9 @@ function mailEnt:CheckPlayer()
         if victim != ply then return end
         
         self:SetNW2Entity("IntendedPlayer", nil)
+
+        --Call remove affliction hook here
+        hook.Remove(hookName)
     end)
 
     if not IsValid(ply) then hook.Remove(hookName) end
