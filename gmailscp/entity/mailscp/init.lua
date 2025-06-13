@@ -1,9 +1,7 @@
-AddCSLuaFile("shared.lua")
-AddCSLuaFile("cl_init.lua")
 include("shared.lua")
 
-function mailEnt:Initialize()
-    self:SetModel("models/props_junk/cardboard_box003a.mdl")
+function mailSCP:Initialize()
+    self:SetModel("models/props_interiors/vendingmachinesoda01a.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
@@ -13,29 +11,29 @@ function mailEnt:Initialize()
         phys:Wake()
     end
 
-    self:SetNW2Int("Cooldown", CurTime())
+    self:SetNW2Int("Cooldown", 0)
 end
 
-function mailEnt:GetRandomPlayer()
+function mailSCP:GetRandomPlayer()
     local playerCount = player.GetCount()
 
     local numberStoper = math.random(1, playerCount)
     local num = 1
 
     for _, ply in player.Iterator() do
-        num = num + 1
-
         if num == numberStoper then
             if IsValid(ply) then
                 self:SetNW2Entity("IntendedPlayer", ply)
                 self:CheckPlayer()
-                break
+                return
             end
         end
+
+        num = num + 1
     end
 end
 
-function mailEnt:Use(user)
+function mailSCP:Use(user)
     local time = CurTime()
     local lastUse = self:GetNW2Int("Cooldown")
 
@@ -49,13 +47,20 @@ function mailEnt:Use(user)
 
     self:SetNW2Int("Cooldown", time)
 
-    user:Give("mail_swep", true)
+    local swep = user:Give("mail_swep")
 
-
+    if IsValid(swep) then
+        self:GetRandomPlayer()
+        local intendedPlayer = self:GetNW2Entity("IntendedPlayer")
+        print(intendedPlayer)
+        swep:SetNW2Entity("IntendedPlayer", intendedPlayer)
+        print(swep:GetNW2Entity("IntendedPlayer"))
+    end
 end
 
-function mailEnt:CheckPlayer()
+function mailSCP:CheckPlayer()
     local ply = self:GetNW2Entity("IntendedPlayer")
+    if not IsValid(ply) then return end
 
     local hookName = "gMailSCP_Ply" .. ply:SteamID()
 
@@ -65,7 +70,7 @@ function mailEnt:CheckPlayer()
         self:SetNW2Entity("IntendedPlayer", nil)
 
         --Call remove affliction hook here
-        hook.Remove(hookName)
+        hook.Remove("PlayerDeath", hookName)
     end)
 
     if not IsValid(ply) then hook.Remove(hookName) end
