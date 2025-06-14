@@ -6,8 +6,5 @@ mailEnt.PrintName = "Dropped Mail"
 mailEnt.Category = "SCPS"
 mailEnt.Spawnable = true -- Remove when done testing
 
-function mailEnt:SetupDataTables()
-    self:SetNW2Entity("IntendedPlayer", nil)
-end
 
 scripted_ents.Register(mailEnt, "mail_ent")

@@ -1,6 +1,6 @@
 include("shared.lua")
 
-function mailSCP:Initialize()
+function mailEnt:Initialize()
     self:SetModel("models/props_junk/cardboard_box003a.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
@@ -15,7 +15,7 @@ end
 function mailEnt:Use(act)
     if not IsValid(act) then return end
     if not act:IsPlayer() then return end
-
-    print("wtf")
+    self:Remove()
+    act:Give("mail_swep")
     
 end

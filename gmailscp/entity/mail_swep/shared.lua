@@ -5,7 +5,7 @@ gMailSwep.Primary = gMailSwep.Primary or {}
 gMailSwep.Secondary = gMailSwep.Secondary or {}
 gMailSwep.PrintName = "Mail"
 gMailSwep.Author = "Gak"
-gMailSwep.Purpose = "Left Mouse: Drop Mail \nRight Mouse: Read Mail"
+gMailSwep.Purpose = "Right Mouse: Drop Mail \nLeft Mouse: Read Mail"
 
 gMailSwep.Slot = 1
 gMailSwep.SlotPos = 3
@@ -29,11 +29,6 @@ gMailSwep.Secondary.Ammo = "none"
 
 function gMailSwep:Initialize()
     self:SetHoldType("fist")
-    self.Target = nil
-end
-
-function gMailSwep:SetupDataTables()
-    self:SetNW2Entity("IntendedPlayer", nil)
 end
 
 

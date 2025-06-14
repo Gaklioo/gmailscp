@@ -23,8 +23,7 @@ function mailSCP:GetRandomPlayer()
     for _, ply in player.Iterator() do
         if num == numberStoper then
             if IsValid(ply) then
-                self:SetNW2Entity("IntendedPlayer", ply)
-                self:CheckPlayer()
+                hook.Run("gMailSCP_SetIntendedPlayer", ply)
                 return
             end
         end
@@ -51,10 +50,9 @@ function mailSCP:Use(user)
 
     if IsValid(swep) then
         self:GetRandomPlayer()
-        local intendedPlayer = self:GetNW2Entity("IntendedPlayer")
+        local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
         print(intendedPlayer)
-        swep:SetNW2Entity("IntendedPlayer", intendedPlayer)
-        print(swep:GetNW2Entity("IntendedPlayer"))
+        if not IsValid(intendedPlayer) then return end
     end
 end
 

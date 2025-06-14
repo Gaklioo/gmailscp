@@ -35,8 +35,8 @@ gMail.Afflictions = {
     },
     --General afflictions that are not bound to one specific group
     ["General"] = {
-
+        ["All those who read others letters are meant to die"] = function(p)
+            
+        end
     }
 }
-
-gMail.GiveCommand = "/dropmail" -- Temporary as there is no access to a interaction system
