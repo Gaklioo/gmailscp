@@ -1,31 +1,45 @@
 include("shared.lua")
 
 function gMailSwep:PrimaryAttack()
+    local ply = self:GetOwner()
 
+    self:SendMessageClient()
+
+    ply:StripWeapon("mail_swep")
 end
 
-function gMailSwep:SecondaryAttack()
+util.AddNetworkString("gMailSCP_GetMessageClient")
+function gMailSwep:SendMessageClient()
+    local ply = self:GetOwner()
 
-end
-
-util.AddNetworkString("gMailSCP_GetIntendedPlayerClient")
-util.AddNetworkString("gMailSCP_ReturnedIntendedPlayer")
-net.Receive("gMailSCP_GetIntendedPlayerClient", function(len, ply)
     if not IsValid(ply) then return end
     if not ply:IsPlayer() then return end
     local weapon = ply:GetActiveWeapon()
 
     if not IsValid(weapon) or weapon:GetClass() != "mail_swep" then return end
-
     local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
+    local message = hook.Run("gMailSCP_GetMessageForPlayer", ply)
 
-    net.Start("gMailSCP_ReturnedIntendedPlayer")
-    net.WriteEntity(intendedPlayer)
+    print("hi")
+
+    net.Start("gMailSCP_GetMessageClient")
+    net.WriteString(message)
     net.Send(ply)
-end)
 
-util.AddNetworkString("gMailSCP_DropMail")
-net.Receive("gMailSCP_DropMail", function(len, ply)
+    if ply != intendedPlayer then
+        ply:ChatPrint("Dont you know its illegal to read mail thats not yours? How dispicible.")
+
+        timer.Simple(5, function()
+            ply:Kill()
+        end)
+    end
+
+    hook.Run("gMailSCP_ResetIntendedPlayer")
+end
+
+function gMailSwep:SecondaryAttack()
+    local ply = self:GetOwner()
+
     if not IsValid(ply) then return end
     if not ply:IsPlayer() then return end
     local weapon = ply:GetActiveWeapon()
@@ -45,29 +59,20 @@ net.Receive("gMailSCP_DropMail", function(len, ply)
     droppedMail:Spawn()
 
     ply:StripWeapon("mail_swep")
-end)
+end
 
-util.AddNetworkString("gMailSCP_GetMessageClient")
-util.AddNetworkString("gMailSCP_GetMessageServer")
-net.Receive("gMailSCP_GetMessageServer", function(len, ply)
+util.AddNetworkString("gMailSCP_GetIntendedPlayerClient")
+util.AddNetworkString("gMailSCP_ReturnedIntendedPlayer")
+net.Receive("gMailSCP_GetIntendedPlayerClient", function(len, ply)
     if not IsValid(ply) then return end
     if not ply:IsPlayer() then return end
     local weapon = ply:GetActiveWeapon()
 
     if not IsValid(weapon) or weapon:GetClass() != "mail_swep" then return end
+
     local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
-    local message = hook.Run("gMailSCP_GetMessageForPlayer")
 
-    net.Start("gMailSCP_GetMessageClient")
-    net.WriteString(message)
+    net.Start("gMailSCP_ReturnedIntendedPlayer")
+    net.WriteEntity(intendedPlayer)
     net.Send(ply)
-
-    if ply != intendedPlayer then
-        ply:ChatPrint("Dont you know its illegal to read mail thats not yours? How dispicible.")
-
-        timer.Simple(5, function()
-            ply:Kill()
-        end)
-    end
-
 end)

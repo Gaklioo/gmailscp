@@ -44,6 +44,13 @@ function mailSCP:Use(user)
         return 
     end
 
+    local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
+
+    if IsValid(intendedPlayer) then
+        user:ChatPrint("The scp seems to be waiting for something")
+        return 
+    end
+
     self:SetNW2Int("Cooldown", time)
 
     local swep = user:Give("mail_swep")

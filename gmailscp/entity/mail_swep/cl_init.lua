@@ -32,9 +32,6 @@ function gMailSwep:PrimaryAttack()
         self.HasOpenedMenu = false
     end
 
-    net.Start("gMailSCP_GetMessageServer")
-    net.SendToServer()
-
     self:SetNextPrimaryFire(CurTime() + 0.5)
 end
 
@@ -50,11 +47,6 @@ end
 gMail.CachedPlayer = nil
 
 function gMailSwep:SecondaryAttack()
-    if IsFirstTimePredicted() then
-        self:SetNextSecondaryFire(CurTime() + 0.5)
-        net.Start("gMailSCP_DropMail")
-        net.SendToServer() 
-    end
 end
 
 hook.Add("PlayerSwitchWeapon", "gMailSCP_PlayerSwitchWeaponClient", function(ply, old, new)
