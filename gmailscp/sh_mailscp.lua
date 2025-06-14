@@ -163,6 +163,26 @@ gMail.Afflictions = {
 
             --Similar to stoneman
             p:SetWalkSpeed(0) 
+        end,
+        ["i swear research never does anything with their time at all they only complain and moan about how theres never enough gensec its the most annoying thing honestly the entire foundation needs to get rid of researchers and replace them with gensec"] = function(p)
+            p:ChatPrint("You feel a sudden hatred for research")
+
+                        if not timer.Exists(timerName) then
+                timer.Create(timerName, 1, 0, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
+
+                    local tr = p:GetEyeTrace().Entity 
+
+                    if not IsValid(tr) then return end
+                    if not tr:IsPlayer() then return end
+
+                    if tr:GetPlayerTeam() == "Research" then
+                        gMail.ForceShoot(p)
+                    end
+                end)
+            end
         end
     },
     --most of the afflictions are going to be rp based at the end of the day.
