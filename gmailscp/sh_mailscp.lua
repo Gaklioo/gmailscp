@@ -193,7 +193,6 @@ gMail.Afflictions = {
             local timerName = gMail.GetTimerName(p)
 
             if not timer.Exists(timerName) then
-                print("Timer Created")
                 timer.Create(timerName, 5, 0, function()
                     if not IsValid(p) then
                         timer.Remove(timerName)
@@ -221,12 +220,10 @@ gMail.Afflictions = {
         ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
             p:ChatPrint("You notice your nose start to hurt a bit")
 
-            timer.Simple(1, function()
-                local curWalkSpeed = p:GetWalkSpeed()
-                local curRunSpeed = p:GetRunSpeed()
-                p:SetWalkSpeed(curWalkSpeed * 1.5)
-                p:SetRunSpeed(curRunSpeed * 2.2)
-            end)
+            local curWalkSpeed = p:GetWalkSpeed()
+            local curRunSpeed = p:GetRunSpeed()
+            p:SetWalkSpeed(curWalkSpeed * 1.5)
+            p:SetRunSpeed(curRunSpeed * 2.2)
         end
     }
 }

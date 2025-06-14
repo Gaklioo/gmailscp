@@ -1,7 +1,7 @@
 include("shared.lua")
 
 function mailEnt:Initialize()
-    self:SetModel("models/props_junk/cardboard_box003a.mdl")
+    self:SetModel("models/props_c17/suitcase_passenger_physics.mdl")
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)

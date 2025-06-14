@@ -23,10 +23,6 @@ function mailSCP:GetRandomPlayer()
 
     for _, ply in player.Iterator() do
         if num == numberStoper then
-            if ply:IsAfflicted() then -- No double afflictions because it kind of breaks the affects
-                return self:GetRandomPlayer()             
-            end
-
             if IsValid(ply) then
                 hook.Run("gMailSCP_SetIntendedPlayer", ply)
                 return

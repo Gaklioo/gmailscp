@@ -64,23 +64,25 @@ hook.Add("gMailSCP_GetMessageForPlayer", "gMailSCP_GetMessageForPlayerServer", f
 end)
 
 function _P:GiveAffliction(func)
-    if self.IsAfflicted then return end
-    self.IsAfflicted = true
+    if self:IsAfflicted() then
+        print("What the fuck") 
+        return 
+    end
 
     if func and isfunction(func) then
         func(self)
         print("[gMailSCP] Affliction given to " .. self:Name())
+        self:SetAfflicted(true)
     else
         self:ChatPrint("You feel a strange feeling in your stomach..")
     end
 end
 
-function _P:IsAfflicted()
-    return self.IsAfflicted
-end
-
 function _P:RemoveAffliction()
-    if not self.IsAfflicted then return end
+    if not self:IsAfflicted() then
+        print("Not Afflicted")
+        return 
+    end
 
     local timerName = "gMailSCP_Affliction_" .. self:SteamID()
 
@@ -89,9 +91,29 @@ function _P:RemoveAffliction()
     end
 
     self:ChatPrint("You feel normal once again.")
-
-    self.IsAfflicted = false
+    self:SetAfflicted(false)
 end
+
+function _P:SetAfflicted(bool)
+    self.IsPlayerAfflicted = bool
+end
+
+function _P:IsAfflicted()
+    return self.IsPlayerAfflicted or false
+end
+
+function _P:InitAfflictions()
+    print("[gMailSCP] Gave affliction status to ply", self:Name())
+    self:SetAfflicted(false)
+end
+
+hook.Add("PlayerInitialSpawn", "gMailSCP_InitPlayer", function(ply)
+    timer.Simple(1, function()
+        if IsValid(ply) then
+            ply:InitAfflictions() 
+        end
+    end)
+end)
 
 hook.Add("gMailSCP_RemovePlayerAffliction", "gMailSCP_RemovePlayerAfflicitonHook", function(ply)
     if not IsValid(ply) then 
@@ -102,7 +124,7 @@ hook.Add("gMailSCP_RemovePlayerAffliction", "gMailSCP_RemovePlayerAfflicitonHook
         return 
     end
     
-    if not ply.IsAfflicted then 
+    if not ply:IsAfflicted() then
         return 
     end
 
@@ -110,5 +132,9 @@ hook.Add("gMailSCP_RemovePlayerAffliction", "gMailSCP_RemovePlayerAfflicitonHook
 end)
 
 hook.Add("PlayerDeath", "gMailSCP_PlayerAfflictionRemoval", function(vic)
+    if not vic:IsAfflicted() then
+        print("[gMailSCP] Player was not afflicted")
+        return 
+    end
     vic:RemoveAffliction()
 end)

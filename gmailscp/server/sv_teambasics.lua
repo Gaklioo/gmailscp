@@ -10,6 +10,14 @@ function _P:GetPlayerTeam()
     return self.plyTeam
 end
 
+function gMail.CheckTeam(team)
+    if not gMail.Afflictions[team] then
+        return false
+    end
+
+    return true
+end
+
 function _P:SetPlayerTeam(team)
     if not gMail.CheckTeam(team) then 
         self.plyTeam = "General"
