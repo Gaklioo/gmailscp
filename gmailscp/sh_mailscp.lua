@@ -1,7 +1,7 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 30
-gMail.PlayerDeathTime = 30
+gMail.Cooldown = 300
+gMail.PlayerDeathTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
 
