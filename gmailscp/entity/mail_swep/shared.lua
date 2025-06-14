@@ -13,8 +13,8 @@ gMailSwep.SlotPos = 3
 gMailSwep.Spawnable = true -- Remove when not testing
 
 gMailSwep.ViewModel = ""
-gMailSwep.WorldModel = ""
-gMailSwep.ViewModelFOV = 90
+gMailSwep.WorldModel = Model("models/weapons/w_suitcase_passenger.mdl")
+gMailSwep.ViewModelFOV = 45
 
 gMailSwep.UseHands = true 
 gMailSwep.Primary.Clipsize = -1
@@ -28,7 +28,7 @@ gMailSwep.Secondary.Automatic = false
 gMailSwep.Secondary.Ammo = "none"
 
 function gMailSwep:Initialize()
-    self:SetHoldType("fist")
+    self:SetHoldType("normal")
 end
 
 

@@ -7,6 +7,16 @@ surface.CreateFont("mailHudFont", {
 
 gMail.Message = nil
 
+function gMailSwep:Initialize()
+    net.Start("gMailSCP_GetIntendedPlayerClient")
+    net.SendToServer()
+end
+
+function gMailSwep:Equip()
+    net.Start("gMailSCP_GetIntendedPlayerClient")
+    net.SendToServer()
+end
+
 net.Receive("gMailSCP_GetMessageClient", function()
     local msg = net.ReadString()
 
@@ -17,20 +27,40 @@ function gMailSwep:PrimaryAttack()
     if self.HasOpenedMenu then return end
 
     self.HasOpenedMenu = true
+    local maxWidth = ScrW() * 0.5
 
-    local frame = vgui.Create("DFrame")
-    frame:SetSize(ScrW() / 2, ScrH() / 2)
-    frame:Center()
-    frame:SetTitle("")
-    frame:SetDraggable(false)
-    frame:MakePopup()
+    timer.Simple(0.2, function()
+        local frame = vgui.Create("DFrame")
+        frame:SetSize(maxWidth, 100)
+        frame:Center()
+        frame:SetTitle("")
+        frame:SetDraggable(false)
+        frame:MakePopup()
 
-    local panel = vgui.Create("DPanel", frame)
-    panel:Dock(FILL)
+        local panel = vgui.Create("DPanel", frame)
+        panel:Dock(FILL)
 
-    frame.OnClose = function()
-        self.HasOpenedMenu = false
-    end
+        local message = vgui.Create("DLabel", panel)
+        print(gMail.Message)
+        message:SetText(gMail.Message or "Mail not finished")
+        message:SetWrap(true)
+        message:SetAutoStretchVertical(true)
+        message:SetWide(maxWidth - 40)
+        message:SetTextColor(Color(0, 0, 0, 255))
+        message:Dock(TOP)
+
+        panel:InvalidateLayout()
+        frame:InvalidateLayout()
+
+        local newHeight = message:GetTall() + 60
+        frame:SetTall(newHeight)
+        frame:Center()
+
+        frame.OnClose = function()
+            self.HasOpenedMenu = false
+        end
+    end)
+
 
     self:SetNextPrimaryFire(CurTime() + 0.5)
 end
@@ -48,7 +78,6 @@ gMail.CachedPlayer = nil
 
 function gMailSwep:SecondaryAttack()
 end
-
 hook.Add("PlayerSwitchWeapon", "gMailSCP_PlayerSwitchWeaponClient", function(ply, old, new)
     if not ply == LocalPlayer() then return end
     if not IsValid(ply) then return end

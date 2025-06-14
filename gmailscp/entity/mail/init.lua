@@ -10,6 +10,14 @@ function mailEnt:Initialize()
     if phys:IsValid() then
         phys:Wake()
     end
+
+    --To avoid someone placing the mail in a obsceure location making the SCP useless, we wait 5 minutes once the mail is dropped before just resetting.
+    local waitTime = 300
+
+    timer.Create("gMailEnt_RemoverTimer" .. self:EntIndex(), waitTime, 1, function()
+        self:remove()
+        hook.Run("gMailSCP_ResetIntendedPlayer")
+    end)
 end
 
 function mailEnt:Use(act)
@@ -17,5 +25,10 @@ function mailEnt:Use(act)
     if not act:IsPlayer() then return end
     self:Remove()
     act:Give("mail_swep")
-    
+
+    local timerName = "gMailEnt_RemoverTimer" .. self:EntIndex()
+
+    if timer.Exists(timerName) then
+        timer.Remove(timerName)
+    end
 end

@@ -5,6 +5,7 @@ function mailSCP:Initialize()
     self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_NONE)
     self:SetSolid(SOLID_VPHYSICS)
+    self:SetUseType(SIMPLE_USE)
 
     local phys = self:GetPhysicsObject()
     if phys:IsValid() then
@@ -22,6 +23,10 @@ function mailSCP:GetRandomPlayer()
 
     for _, ply in player.Iterator() do
         if num == numberStoper then
+            if ply:IsAfflicted() then -- No double afflictions because it kind of breaks the affects
+                return self:GetRandomPlayer()             
+            end
+
             if IsValid(ply) then
                 hook.Run("gMailSCP_SetIntendedPlayer", ply)
                 return
@@ -46,6 +51,7 @@ function mailSCP:Use(user)
 
     local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
 
+    --Quick fix around the intended target being universal, just dont let anyone use it until the mail has been delievered / used
     if IsValid(intendedPlayer) then
         user:ChatPrint("The scp seems to be waiting for something")
         return 
@@ -61,22 +67,4 @@ function mailSCP:Use(user)
         print(intendedPlayer)
         if not IsValid(intendedPlayer) then return end
     end
-end
-
-function mailSCP:CheckPlayer()
-    local ply = self:GetNW2Entity("IntendedPlayer")
-    if not IsValid(ply) then return end
-
-    local hookName = "gMailSCP_Ply" .. ply:SteamID()
-
-    hook.Add("PlayerDeath", hookName, function(victim)
-        if victim != ply then return end
-        
-        self:SetNW2Entity("IntendedPlayer", nil)
-
-        --Call remove affliction hook here
-        hook.Remove("PlayerDeath", hookName)
-    end)
-
-    if not IsValid(ply) then hook.Remove(hookName) end
 end

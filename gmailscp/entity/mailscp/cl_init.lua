@@ -11,7 +11,7 @@ function mailSCP:Draw()
     end
 
     local dist = self:GetPos():Distance2DSqr(ply:GetPos())
-    local max = 1000000
+    local max = 10000
 
     if dist > max then 
         return 

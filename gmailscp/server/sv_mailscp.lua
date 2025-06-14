@@ -2,6 +2,7 @@ include("gmailscp/sh_mailscp.lua")
 
 local _P = FindMetaTable("Player")
 
+--Possibly implement better version of this, since its a universal target as of now but only one use per active mail so okayish for now maybe
 gMail.IntendedPlayer = nil 
 
 function gMail.SetIntendedPlayer(ply)
@@ -31,20 +32,31 @@ end)
 hook.Add("gMailSCP_GetMessageForPlayer", "gMailSCP_GetMessageForPlayerServer", function(ply)
     local intendedPlayer = gMail.GetIntendedPlayer()
 
-    if not IsValid(intendedPlayer) then return end
-    if not intendedPlayer:IsPlayer() then return end
+    if not IsValid(intendedPlayer) then 
+        return 
+    end
+
+    if not intendedPlayer:IsPlayer() then 
+        return 
+    end
 
     local playersTeam = intendedPlayer:GetPlayerTeam()
     local afflictionList = gMail.Afflictions[playersTeam]
-    if not afflictionList then return "Unknown Mail" end
+    if not afflictionList then 
+        return "Unknown Mail" 
+    end
 
     local afflictionKeys = table.GetKeys(afflictionList)
-    if #afflictionKeys == 0 then return "Mail not intended for this group." end
+    if #afflictionKeys == 0 then 
+        return "Mail not intended for this group." 
+    end
 
     local chosenMessage = afflictionKeys[math.random(1, #afflictionKeys)]
     local afflictionFunction = afflictionList[chosenMessage]
 
-    print(chosenMessage)
+    if ply != intendedPlayer then
+        return chosenMessage
+    end
 
     ply:GiveAffliction(afflictionFunction)
 
@@ -63,10 +75,13 @@ function _P:GiveAffliction(func)
     end
 end
 
-function _P:AddAfflictionTimer(timerName)
+function _P:IsAfflicted()
+    return self.IsAfflicted
 end
 
 function _P:RemoveAffliction()
+    if not self.IsAfflicted then return end
+
     local timerName = "gMailSCP_Affliction_" .. self:SteamID()
 
     if timer.Exists(timerName) then
@@ -79,10 +94,17 @@ function _P:RemoveAffliction()
 end
 
 hook.Add("gMailSCP_RemovePlayerAffliction", "gMailSCP_RemovePlayerAfflicitonHook", function(ply)
-    if not IsValid(ply) then return end
-    if not ply:IsPlayer() then return end
+    if not IsValid(ply) then 
+        return 
+    end
+
+    if not ply:IsPlayer() then 
+        return 
+    end
     
-    if not ply.IsAfflicted then return end
+    if not ply.IsAfflicted then 
+        return 
+    end
 
     ply:RemoveAffliction()
 end)

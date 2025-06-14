@@ -43,7 +43,7 @@ gMail.Afflictions = {
 
             local timerName = gMail.GetTimerName(p)
 
-            if not timer.Exists(p) then
+            if not timer.Exists(timerName) then
                 timer.Create(timerName, 3, 0, function()
                     if not IsValid(p) then
                         timer.Remove(timerName)
@@ -55,14 +55,68 @@ gMail.Afflictions = {
 
                     if tr:GetPlayerTeam() != "Omega-1" then return end
 
-                    p:SetEyeAngles((tr:GetPos() - p:GetPos()):Angle())
+                    p:SetEyeAngles((p:GetPos() - tr:GetPos()):Angle())
                     gMail.ForceShoot(p)
                 end)
+            end
+        end,
+        ["Ethics and overseers truly must hate each other i mean i swear for the foundation to be so powerful and so big because they work so good together there must be like some sort of hatred between them i swear"] = function(p)
+            --Another RP affliction
+            p:ChatPrint("You feel the sudden urge to hate all overseers, and make it known you hate them")
+        end,
+        ["Ethics really are the big heads of the foundation i mean like holy hell their heads are so fucking big that youd think they could fly away there is nothing more disgusting then how big those ethic heads are"] = function(p)
+            p:ChatPrint("You feel like you have the ego of a greek god in the flesh")
+
+            local bone = p:LookupBone("ValveBiped.Bip01_Head1")
+            if bone then
+                p:ManipulateBoneScale(bone, Vector(2, 2, 2))
             end
         end
     },
     ["Overseer"] = {
+        ["the death of the overseer committee is soon i swear the countdown is fucking ticking all these god damnd over seers will see the end of their own life and they will never be revived or taken care of ever again they are the worst"] = function(p)
+            p:ChatPrint("The clock is ticking... You have 5 minutes to live.")
 
+            local timerName = gMail.GetTimerName(p)
+
+            if not timer.Exists(timerName) then
+                timer.Create(timerName, 300, 1, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
+                    p:Kill()
+                end)
+            end
+        end,
+        ["Alpha-1 are full of fucking traitors, you think that really the ci are insurgents? no fucking shot these people have convinced us of these stupid lies these idiots are the creators of the ci these traitor bastards"] = function(p)
+            p:ChatPrint("Your personel guards are truly the evil of the foundation")
+
+            local timerName = gMail.GetTimerName(p)
+
+            if not timer.Exists(timerName) then
+                timer.Create(timerName, 15, 0, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
+
+                    local tr = p:GetEyeTrace().Entity
+                    if not IsValid(tr) then return end
+                    if not tr:IsPlayer() then return end
+
+                    if tr:GetPlayerTeam() != "Alpha-1" then return end
+
+                    p:SetEyeAngles((tr:GetPos() - p:GetPos()):Angle())
+                    gMail.ForceShoot(p)
+                end)
+            end
+        end,
+        ["overseers really have the biggest god damn heads in the world if you looked at them from space all youd see is their cranium their heads are so god damn big that i think theres not much space for anything but fluid in there because they sure act stupid"] = function(p)
+            local bone = p:LookupBone("ValveBiped.Bip01_Head1")
+
+            if bone then
+                p:ManipulateBoneScale(bone, Vector(2, 2, 2))
+            end
+        end
     },
     ["Janitor"] = {
 
@@ -102,10 +156,28 @@ gMail.Afflictions = {
                     end
                 end)
             end
+        end,
+        ["at the end of the day gensec never do anything they are a bunch of useless creatures that do nothing but glote upon their own stupidity and cant even quell riots correctly beacuse they are the most useless indiviuals that we have ever seen"] = function(p)
+            p:ChatPrint("You feel so useless")
+
+            --Similar to stoneman
+            p:SetWalkSpeed(0) 
         end
     },
+    --most of the afflictions are going to be rp based at the end of the day.
     ["Research"] = {
-
+        ["i love how these researchers think theyre actually doing anything for the foundation its so funny how useless and incompetent they all are they are truly the idiots of the world and like deserve to be shot and fired from their stupid jobs"] = function(p)
+            p:ChatPrint("It appears as if you are unable to do your job, go be free into the wild")
+        end,
+        ["researchers are so limited by how no one trusts their judgement or ability to do correct testing its so dumb how everything is locked behind some sort of knowledge wall if they knew everything than research would progress so much faster"] = function(p)
+            p:ChatPrint("You have gained all knowledge to every SCP, go research and attempt to test on anything.")
+        end,
+        ["without the ethics committee every singular scp test would be so much more beneficial and faster without their stupid intereference the world would be so much better there is no way that anyone should ever respect their authority"] = function(p)
+            p:ChatPrint("You no longer feel the need for ethical testing, test without any bound of ethics.")
+        end,
+        ["scp 096 really isnt that real i mean like its so stupid you cant look at the thing? what a stupid little lie that people tell themselves like its such a useless waste of time to think anything like that is even real lol"] = function(p)
+            p:Give("scp_096") -- danger danger
+        end
     },
     ["CL4"] = {
 
@@ -122,7 +194,7 @@ gMail.Afflictions = {
 
             if not timer.Exists(timerName) then
                 print("Timer Created")
-                timer.Create(timerName, 1, 0, function()
+                timer.Create(timerName, 5, 0, function()
                     if not IsValid(p) then
                         timer.Remove(timerName)
                     end
@@ -141,11 +213,20 @@ gMail.Afflictions = {
                     if not IsValid(p) then
                         timer.Remove(timerName)
                     end
-                    print("Started")
                     
                     gMail.ForceShoot(p)
                 end)
             end
+        end,
+        ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
+            p:ChatPrint("You notice your nose start to hurt a bit")
+
+            timer.Simple(1, function()
+                local curWalkSpeed = p:GetWalkSpeed()
+                local curRunSpeed = p:GetRunSpeed()
+                p:SetWalkSpeed(curWalkSpeed * 1.5)
+                p:SetRunSpeed(curRunSpeed * 2.2)
+            end)
         end
     }
 }
