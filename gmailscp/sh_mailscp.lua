@@ -1,6 +1,6 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 1
+gMail.Cooldown = 180
 gMail.PlayerDeathTime = 300
 gMail.PlayerAfflictionTime = 360
 
@@ -178,12 +178,6 @@ gMail.Afflictions = {
         ["scp 096 really isnt that real i mean like its so stupid you cant look at the thing? what a stupid little lie that people tell themselves like its such a useless waste of time to think anything like that is even real lol"] = function(p)
             p:Give("scp_096") -- danger danger
         end
-    },
-    ["CL4"] = {
-
-    },
-    ["CL5"] = {
-
     },
     --General afflictions that are not bound to one specific group
     ["General"] = {

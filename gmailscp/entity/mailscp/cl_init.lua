@@ -1,7 +1,5 @@
 include("shared.lua")
 
-mailSCP.Player = LocalPlayer()
-
 function mailSCP:Draw()
     self:DrawModel()
 
@@ -11,7 +9,7 @@ function mailSCP:Draw()
     end
 
     local dist = self:GetPos():Distance2DSqr(ply:GetPos())
-    local max = 10000
+    local max = 100000
 
     if dist > max then 
         return 

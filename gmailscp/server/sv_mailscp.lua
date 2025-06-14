@@ -65,7 +65,6 @@ end)
 
 function _P:GiveAffliction(func)
     if self:IsAfflicted() then
-        print("What the fuck") 
         return 
     end
 
@@ -80,7 +79,6 @@ end
 
 function _P:RemoveAffliction()
     if not self:IsAfflicted() then
-        print("Not Afflicted")
         return 
     end
 
