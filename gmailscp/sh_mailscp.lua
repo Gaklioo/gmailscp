@@ -1,8 +1,9 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 180
-gMail.PlayerDeathTime = 300
+gMail.Cooldown = 30
+gMail.PlayerDeathTime = 30
 gMail.PlayerAfflictionTime = 360
+gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
 
 function gMail.GetTimerName(p)
     if not IsValid(p) then return end

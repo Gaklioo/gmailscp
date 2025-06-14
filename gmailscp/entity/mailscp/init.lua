@@ -63,4 +63,11 @@ function mailSCP:Use(user)
         print(intendedPlayer)
         if not IsValid(intendedPlayer) then return end
     end
+
+    user:ChatPrint("You hear a whisper from the SCP, it says you have 10 minutes to deliver this mail before your death.")
+
+    timer.Create(gMail.PlayerKillTimerName, gMail.PlayerDeathTime, 1, function()
+        user:ChatPrint("You have failed to deliver your mail. Goodbye.")
+        user:Kill()
+    end)
 end

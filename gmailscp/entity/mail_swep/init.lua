@@ -5,6 +5,10 @@ function gMailSwep:PrimaryAttack()
     local ply = self:GetOwner()
     local message = hook.Run("gMailSCP_GetMessageForPlayer", ply)
 
+    if timer.Exists(gMail.PlayerKillTimerName) then
+        timer.Remove(gMail.PlayerKillTimerName)
+    end
+
     net.Start("gMailSCP_GetMessageClient")
     net.WriteString(message)
     net.Send(ply)
@@ -30,7 +34,7 @@ function gMailSwep:SendMessageClient()
     if not IsValid(weapon) or weapon:GetClass() != "mail_swep" then 
         return 
     end
-    
+
     local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
 
     if ply != intendedPlayer then
@@ -50,6 +54,7 @@ function gMailSwep:SecondaryAttack()
     if not IsValid(ply) then 
         return 
     end
+
     if not ply:IsPlayer() then 
         return 
     end
