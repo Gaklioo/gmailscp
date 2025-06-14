@@ -82,6 +82,11 @@ function _P:RemoveAffliction()
         return 
     end
 
+    local bone = self:LookupBone("ValveBiped.Bip01_Head1")
+    if bone then
+        self:ManipulateBoneScale(bone, Vector(1, 1, 1))
+    end
+
     local timerName = "gMailSCP_Affliction_" .. self:SteamID()
 
     if timer.Exists(timerName) then
