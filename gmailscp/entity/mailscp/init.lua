@@ -60,7 +60,6 @@ function mailSCP:Use(user)
     if IsValid(swep) then
         self:GetRandomPlayer()
         local intendedPlayer = hook.Run("gMailSCP_GetIntendedPlayer")
-        print(intendedPlayer)
         if not IsValid(intendedPlayer) then return end
     end
 

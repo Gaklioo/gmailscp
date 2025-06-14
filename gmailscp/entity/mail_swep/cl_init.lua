@@ -41,7 +41,6 @@ function gMailSwep:PrimaryAttack()
         panel:Dock(FILL)
 
         local message = vgui.Create("DLabel", panel)
-        print(gMail.Message)
         message:SetText(gMail.Message or "Mail not finished")
         message:SetWrap(true)
         message:SetAutoStretchVertical(true)

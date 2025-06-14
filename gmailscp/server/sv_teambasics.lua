@@ -32,12 +32,10 @@ hook.Add("PlayerSpawn", "gMailSCP_TempPlayerTeamSet", function(ply)
 end)
 
 concommand.Add("omega", function(ply)
-    print("Changed!")
     ply:SetPlayerTeam("Omega-1")
 end)
 
 concommand.Add("alpha", function(ply)
-    print("Changed!")
     ply:SetPlayerTeam("Alpha-1")
 end)
 
