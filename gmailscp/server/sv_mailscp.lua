@@ -19,6 +19,23 @@ end
 hook.Add("gMailSCP_SetIntendedPlayer", "gMailSCP_SetIntendedPlayerServer", function(ply)
     print(ply)
     gMail.SetIntendedPlayer(ply)
+
+    hook.Add("PlayerDisconnected", "gMailSCP_CheckPlayerDisconnect" .. ply:SteamID(), function(disconnectedPlayer)
+        if disconnectedPlayer == ply then
+            hook.Run("gMailSCP_ResetIntendedPlayer")
+            hook.Run("gMailSCP_RemoveSwepDisconnect")
+            hook.Remove("PlayerDisconnected", "gMailSCP_CheckPlayerDisconnect" .. ply:SteamID())            
+        end
+    end)
+end)
+
+hook.Add("gMailSCP_RemoveSwepDisconnect", "gMailSCP_RemoveSwepDisconnectServer", function()
+    for _, ply in player.Iterator() do
+        if ply:GetActiveWeapon():GetClass() == "mail_swep" then
+            ply:ChatPrint("The intended target has died. No need for the mail anymore.")
+            ply:StripWeapon("mail_swep")
+        end
+    end
 end)
 
 hook.Add("gMailSCP_GetIntendedPlayer", "gMailSCP_GetIntendedPlayerServer", function()

@@ -283,6 +283,8 @@ gMail.Afflictions = {
                 if player == p then
                     net.Start("gMailSCP_RemovePlayerColor")
                     net.Send(player)
+
+                    hook.Remove("PlayerDeath", "gMailSCP_RemoveColorServer" .. p:SteamID())
                 end
             end)
         end,
@@ -296,6 +298,8 @@ gMail.Afflictions = {
                 if player == p then
                     net.Start("gMailSCP_RemovePlayerToyTown")
                     net.Send(player)
+
+                    hook.Remove("PlayerDeath", "gMailSCP_RemoveToyTown" .. p:SteamID())
                 end
             end)
         end,
