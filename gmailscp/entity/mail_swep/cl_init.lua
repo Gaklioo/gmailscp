@@ -98,7 +98,7 @@ end)
 function gMailSwep:DrawHUD()
     local target = gMail.CachedPlayer
 
-    if not target then return end
+    if not IsValid(target) then return end
     if not target:IsPlayer() then return end
     local targetName = target:Name()
     local x, y = ScrW(), ScrH()
