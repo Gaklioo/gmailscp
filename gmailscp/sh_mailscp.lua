@@ -1,9 +1,15 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 300
+gMail.Cooldown = 1
 gMail.PlayerDeathTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
+
+if SERVER then
+    util.AddNetworkString("gMailSCP_ChangePlayerColor")
+    util.AddNetworkString("gMailSCP_RemovePlayerColor")    
+end
+
 
 function gMail.GetTimerName(p)
     if not IsValid(p) then return end
@@ -119,9 +125,6 @@ gMail.Afflictions = {
             end
         end
     },
-    ["Janitor"] = {
-
-    }, 
     ["Gensec"] = {
         ["Every single time I see these news articles these cops have no trigger discipline its always shoot shoot shoot shoot fuckign shoot STOP FUCKING SHOOHTING violence is the only awnser in these minds of idiots i hate them i hate them i hate them"] = function(p)
             p:ChatPrint("Your finger becomes unnaturally jittery")
@@ -183,6 +186,10 @@ gMail.Afflictions = {
                     end
                 end)
             end
+        end,
+        ["gensec never really get the opportunity to be around the site i swear these idiots dont even know what we do we are general security we are not the rats of the foundation we dont only protect dblock we protect the entire god damned site"] = function(p)
+            --RP Affliction
+            p:ChatPrint("You feel the urge to go protect whichever location you prefer")
         end
     },
     --most of the afflictions are going to be rp based at the end of the day.
@@ -202,43 +209,56 @@ gMail.Afflictions = {
     },
     --General afflictions that are not bound to one specific group
     ["General"] = {
-        ["All those who read others letters are meant to die"] = function(p)
-            p:ChatPrint("Goodbye World")
+        -- ["All those who read others letters are meant to die"] = function(p)
+        --     p:ChatPrint("Goodbye World")
 
-            local timerName = gMail.GetTimerName(p)
+        --     local timerName = gMail.GetTimerName(p)
 
-            if not timer.Exists(timerName) then
-                timer.Create(timerName, 5, 0, function()
-                    if not IsValid(p) then
-                        timer.Remove(timerName)
-                    end
+        --     if not timer.Exists(timerName) then
+        --         timer.Create(timerName, 5, 0, function()
+        --             if not IsValid(p) then
+        --                 timer.Remove(timerName)
+        --             end
 
-                    p:Say("I fucking hate the foundation")
-                end)
-            end
-        end,
-        ["I heard even just fucking reading about suger makes you hyperactive theres no way that this can be true though because sugar is like for your blood i think and like without the injestion like theres no way right theres not way"] = function(p)
-            p:ChatPrint("Your body suddenly gets tingly")
+        --             p:Say("I fucking hate the foundation")
+        --         end)
+        --     end
+        -- end,
+        -- ["I heard even just fucking reading about suger makes you hyperactive theres no way that this can be true though because sugar is like for your blood i think and like without the injestion like theres no way right theres not way"] = function(p)
+        --     p:ChatPrint("Your body suddenly gets tingly")
 
-            local timerName = gMail.GetTimerName(p)
+        --     local timerName = gMail.GetTimerName(p)
 
-            if not timer.Exists(timerName) then
-                timer.Create(timerName, 10, 0, function()
-                    if not IsValid(p) then
-                        timer.Remove(timerName)
-                    end
+        --     if not timer.Exists(timerName) then
+        --         timer.Create(timerName, 10, 0, function()
+        --             if not IsValid(p) then
+        --                 timer.Remove(timerName)
+        --             end
                     
-                    gMail.ForceShoot(p)
-                end)
-            end
-        end,
-        ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
-            p:ChatPrint("You notice your nose start to hurt a bit")
+        --             gMail.ForceShoot(p)
+        --         end)
+        --     end
+        -- end,
+        -- ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
+        --     p:ChatPrint("You notice your nose start to hurt a bit")
 
-            local curWalkSpeed = p:GetWalkSpeed()
-            local curRunSpeed = p:GetRunSpeed()
-            p:SetWalkSpeed(curWalkSpeed * 1.5)
-            p:SetRunSpeed(curRunSpeed * 2.2)
+        --     local curWalkSpeed = p:GetWalkSpeed()
+        --     local curRunSpeed = p:GetRunSpeed()
+        --     p:SetWalkSpeed(curWalkSpeed * 1.5)
+        --     p:SetRunSpeed(curRunSpeed * 2.2)
+        -- end,
+        ["at the end of the day all the foundation does is fucking nothing at all except make everything look pretty and pink its so stupid and so dumb the foundation deserves to be destroyed by all means possible"] = function(p)
+            p:ChatPrint("The pink... the cuteness...")
+
+            net.Start("gMailSCP_ChangePlayerColor")
+            net.Send(p)
+
+            hook.Add("PlayerDeath", "gMailSCP_RemoveColorServer" .. p:SteamID(), function(player)
+                if player == p then
+                    net.Start("gMailSCP_RemovePlayerColor")
+                    net.Send(player)
+                end
+            end)
         end
     }
 }
