@@ -5,6 +5,7 @@ gMail.PlayerDeathTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
 
+
 if SERVER then
     util.AddNetworkString("gMailSCP_ChangePlayerColor")
     util.AddNetworkString("gMailSCP_RemovePlayerColor")    
@@ -136,6 +137,17 @@ gMail.Afflictions = {
             if bone then
                 p:ManipulateBoneScale(bone, Vector(2, 2, 2))
             end
+        end,
+        ["overseers really do nothing for the foundation at all theyre just a bunch of useless paper pushers who deserve to be bombed into the ground because they do nothing at all except waste valuable air and should be killed and murdered and never seen again"] = function(p)
+            timer.Simple(5, function()
+                local pos = p:GetPos()
+                local radius = 50
+                local damage = 500
+                util.BlastDamage(game.GetWorld(), p, pos, radius, damage)
+                local effect = EffectData()
+                effect:SetOrigin(pos)
+                util.Effect("Explosion", effect)
+            end)
         end
     },
     ["Gensec"] = {
@@ -183,7 +195,7 @@ gMail.Afflictions = {
         ["i swear research never does anything with their time at all they only complain and moan about how theres never enough gensec its the most annoying thing honestly the entire foundation needs to get rid of researchers and replace them with gensec"] = function(p)
             p:ChatPrint("You feel a sudden hatred for research")
 
-                        if not timer.Exists(timerName) then
+               if not timer.Exists(timerName) then
                 timer.Create(timerName, 1, 0, function()
                     if not IsValid(p) then
                         timer.Remove(timerName)
@@ -283,6 +295,24 @@ gMail.Afflictions = {
                 if player == p then
                     net.Start("gMailSCP_RemovePlayerToyTown")
                     net.Send(player)
+                end
+            end)
+        end,
+        ["i swear nobody understands what the hell im even talking about anymore each time i attempt to talk to others they just look through me like im a puppet without a singular thought its so dumb and stupid i swear these people who dont understand me need to die"] = function(p)
+            p:ChatPrint("Nobody understands me...")
+
+            hook.Add("PlayerSay", "gMailSCP_ChangeText" .. p:SteamID(), function(ply, text)
+                if ply == p then
+                    local newMessage = util.Base64Encode(text)
+
+                    return newMessage
+                end
+            end)
+
+            hook.Add("PlayerDeath", "gMailSCP_RemoveEncodedText" .. p:SteamID(), function(vic)
+                if vic == p then
+                    hook.Remove("PlayerSay", "gMailSCP_ChangeText" .. p:SteamID())
+                    hook.Remove("PlayerDeath", "gMailSCP_RemoveEncodedtext" .. p:SteamID())
                 end
             end)
         end
