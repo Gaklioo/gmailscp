@@ -190,7 +190,8 @@ gMail.Afflictions = {
             p:ChatPrint("You feel so useless")
 
             --Similar to stoneman
-            p:SetWalkSpeed(0) 
+            p:SetWalkSpeed(0)
+            p:SetRunSpeed(0) 
         end,
         ["i swear research never does anything with their time at all they only complain and moan about how theres never enough gensec its the most annoying thing honestly the entire foundation needs to get rid of researchers and replace them with gensec"] = function(p)
             p:ChatPrint("You feel a sudden hatred for research")
