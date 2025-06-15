@@ -1,11 +1,19 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 300
+gMail.Cooldown = 1
 gMail.PlayerDeathTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
 
-function gMail.GetTimerName(p)
+if SERVER then
+    util.AddNetworkString("gMailSCP_ChangePlayerColor")
+    util.AddNetworkString("gMailSCP_RemovePlayerColor")    
+    util.AddNetworkString("gMailSCP_StartToyTown")
+    util.AddNetworkString("gMailSCP_RemovePlayerToyTown")
+end
+
+
+function gMail.GetTimerName(p)  
     if not IsValid(p) then return end
     if not p:IsPlayer() then return end
 
@@ -72,6 +80,17 @@ gMail.Afflictions = {
             if bone then
                 p:ManipulateBoneScale(bone, Vector(2, 2, 2))
             end
+        end,
+        ["ethics really deserve to be at the bottom of the barrel they have absolutely no reason to give us such a pain in the ass about our god damn self they are so fucking annoying they deserve to be bombed over and over and just eliminated from the site"] = function(p)
+            timer.Simple(5, function()
+                local pos = p:GetPos()
+                local radius = 50
+                local damage = 500
+                util.BlastDamage(game.GetWorld(), p, pos, radius, damage)
+                local effect = EffectData()
+                effect:SetOrigin(pos)
+                util.Effect("Explosion", effect)
+            end)
         end
     },
     ["Overseer"] = {
@@ -119,9 +138,6 @@ gMail.Afflictions = {
             end
         end
     },
-    ["Janitor"] = {
-
-    }, 
     ["Gensec"] = {
         ["Every single time I see these news articles these cops have no trigger discipline its always shoot shoot shoot shoot fuckign shoot STOP FUCKING SHOOHTING violence is the only awnser in these minds of idiots i hate them i hate them i hate them"] = function(p)
             p:ChatPrint("Your finger becomes unnaturally jittery")
@@ -163,6 +179,30 @@ gMail.Afflictions = {
 
             --Similar to stoneman
             p:SetWalkSpeed(0) 
+        end,
+        ["i swear research never does anything with their time at all they only complain and moan about how theres never enough gensec its the most annoying thing honestly the entire foundation needs to get rid of researchers and replace them with gensec"] = function(p)
+            p:ChatPrint("You feel a sudden hatred for research")
+
+                        if not timer.Exists(timerName) then
+                timer.Create(timerName, 1, 0, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
+
+                    local tr = p:GetEyeTrace().Entity 
+
+                    if not IsValid(tr) then return end
+                    if not tr:IsPlayer() then return end
+
+                    if tr:GetPlayerTeam() == "Research" then
+                        gMail.ForceShoot(p)
+                    end
+                end)
+            end
+        end,
+        ["gensec never really get the opportunity to be around the site i swear these idiots dont even know what we do we are general security we are not the rats of the foundation we dont only protect dblock we protect the entire god damned site"] = function(p)
+            --RP Affliction
+            p:ChatPrint("You feel the urge to go protect whichever location you prefer")
         end
     },
     --most of the afflictions are going to be rp based at the end of the day.
@@ -219,6 +259,32 @@ gMail.Afflictions = {
             local curRunSpeed = p:GetRunSpeed()
             p:SetWalkSpeed(curWalkSpeed * 1.5)
             p:SetRunSpeed(curRunSpeed * 2.2)
+        end,
+        ["at the end of the day all the foundation does is fucking nothing at all except make everything look pretty and pink its so stupid and so dumb the foundation deserves to be destroyed by all means possible"] = function(p)
+            p:ChatPrint("The pink... the cuteness...")
+
+            net.Start("gMailSCP_ChangePlayerColor")
+            net.Send(p)
+
+            hook.Add("PlayerDeath", "gMailSCP_RemoveColorServer" .. p:SteamID(), function(player)
+                if player == p then
+                    net.Start("gMailSCP_RemovePlayerColor")
+                    net.Send(player)
+                end
+            end)
+        end,
+        ["all these toys all over the world arent delivered by santa theyre imagined by something and just thrown into the world is so fucking crazy i hate it so much how people just believe that these santas can create so much toys its the god damn anomaly doing it"] = function(p)
+            p:ChatPrint("The toys are coming")
+
+            net.Start("gMailSCP_StartToyTown")
+            net.Send(p)
+
+            hook.Add("PlayerDeath", "gMailSCP_RemoveToyTown" .. p:SteamID(), function(player)
+                if player == p then
+                    net.Start("gMailSCP_RemovePlayerToyTown")
+                    net.Send(player)
+                end
+            end)
         end
     }
 }

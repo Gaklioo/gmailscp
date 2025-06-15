@@ -43,7 +43,10 @@ hook.Add("gMailSCP_GetMessageForPlayer", "gMailSCP_GetMessageForPlayerServer", f
     local playersTeam = intendedPlayer:GetPlayerTeam()
     local afflictionList = gMail.Afflictions[playersTeam]
     if not afflictionList then 
-        return "Unknown Mail" 
+        ply:SetPlayerTeam("General")
+
+        playersTeam = intendedPlayer:GetPlayerTeam()
+        afflictionList = gMail.Afflictions[playersTeam]
     end
 
     local afflictionKeys = table.GetKeys(afflictionList)
