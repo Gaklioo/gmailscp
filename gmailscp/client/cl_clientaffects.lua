@@ -23,3 +23,17 @@ net.Receive("gMailSCP_RemovePlayerColor", function()
     local ply = LocalPlayer()
     hook.Remove("RenderScreenspaceEffects", "gMailSCP_ChangePlayerScreenColor" .. ply:SteamID())
 end)
+
+net.Receive("gMailSCp_StartToyTown", function()
+    local ply = LocalPlayer()
+
+    hook.Add("RenderScreenspaceEffects", "gMailSCP_StartToyTownClient" .. ply:SteamID(), function()
+        DrawToyTown(10, ScrH())
+    end)
+end)
+
+net.Receive("gMailSCP_RemovePlayerToyTown", function()
+    local ply = LocalPlayer()
+
+    hook.Remove("RenderScreenspaceEffects", "gMailSCP_StartToyTownClient" .. ply:SteamID())
+end)

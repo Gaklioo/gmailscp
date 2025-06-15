@@ -8,10 +8,12 @@ gMail.PlayerKillTimerName = "gMailSCP_Affliction_KillPlayer"
 if SERVER then
     util.AddNetworkString("gMailSCP_ChangePlayerColor")
     util.AddNetworkString("gMailSCP_RemovePlayerColor")    
+    util.AddNetworkString("gMailSCP_StartToyTown")
+    util.AddNetworkString("gMailSCP_RemovePlayerToyTown")
 end
 
 
-function gMail.GetTimerName(p)
+function gMail.GetTimerName(p)  
     if not IsValid(p) then return end
     if not p:IsPlayer() then return end
 
@@ -78,6 +80,17 @@ gMail.Afflictions = {
             if bone then
                 p:ManipulateBoneScale(bone, Vector(2, 2, 2))
             end
+        end,
+        ["ethics really deserve to be at the bottom of the barrel they have absolutely no reason to give us such a pain in the ass about our god damn self they are so fucking annoying they deserve to be bombed over and over and just eliminated from the site"] = function(p)
+            timer.Simple(5, function()
+                local pos = p:GetPos()
+                local radius = 50
+                local damage = 500
+                util.BlastDamage(game.GetWorld(), p, pos, radius, damage)
+                local effect = EffectData()
+                effect:SetOrigin(pos)
+                util.Effect("Explosion", effect)
+            end)
         end
     },
     ["Overseer"] = {
@@ -209,44 +222,44 @@ gMail.Afflictions = {
     },
     --General afflictions that are not bound to one specific group
     ["General"] = {
-        -- ["All those who read others letters are meant to die"] = function(p)
-        --     p:ChatPrint("Goodbye World")
+        ["All those who read others letters are meant to die"] = function(p)
+            p:ChatPrint("Goodbye World")
 
-        --     local timerName = gMail.GetTimerName(p)
+            local timerName = gMail.GetTimerName(p)
 
-        --     if not timer.Exists(timerName) then
-        --         timer.Create(timerName, 5, 0, function()
-        --             if not IsValid(p) then
-        --                 timer.Remove(timerName)
-        --             end
+            if not timer.Exists(timerName) then
+                timer.Create(timerName, 5, 0, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
 
-        --             p:Say("I fucking hate the foundation")
-        --         end)
-        --     end
-        -- end,
-        -- ["I heard even just fucking reading about suger makes you hyperactive theres no way that this can be true though because sugar is like for your blood i think and like without the injestion like theres no way right theres not way"] = function(p)
-        --     p:ChatPrint("Your body suddenly gets tingly")
+                    p:Say("I fucking hate the foundation")
+                end)
+            end
+        end,
+        ["I heard even just fucking reading about suger makes you hyperactive theres no way that this can be true though because sugar is like for your blood i think and like without the injestion like theres no way right theres not way"] = function(p)
+            p:ChatPrint("Your body suddenly gets tingly")
 
-        --     local timerName = gMail.GetTimerName(p)
+            local timerName = gMail.GetTimerName(p)
 
-        --     if not timer.Exists(timerName) then
-        --         timer.Create(timerName, 10, 0, function()
-        --             if not IsValid(p) then
-        --                 timer.Remove(timerName)
-        --             end
+            if not timer.Exists(timerName) then
+                timer.Create(timerName, 10, 0, function()
+                    if not IsValid(p) then
+                        timer.Remove(timerName)
+                    end
                     
-        --             gMail.ForceShoot(p)
-        --         end)
-        --     end
-        -- end,
-        -- ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
-        --     p:ChatPrint("You notice your nose start to hurt a bit")
+                    gMail.ForceShoot(p)
+                end)
+            end
+        end,
+        ["Cocaine truly is like the best type of drug that someone can use because like it makes you feel so fucking good and like the cia is definintly involved in the crack trade of 1990s that forced impovrished communities to use crack"] = function(p)
+            p:ChatPrint("You notice your nose start to hurt a bit")
 
-        --     local curWalkSpeed = p:GetWalkSpeed()
-        --     local curRunSpeed = p:GetRunSpeed()
-        --     p:SetWalkSpeed(curWalkSpeed * 1.5)
-        --     p:SetRunSpeed(curRunSpeed * 2.2)
-        -- end,
+            local curWalkSpeed = p:GetWalkSpeed()
+            local curRunSpeed = p:GetRunSpeed()
+            p:SetWalkSpeed(curWalkSpeed * 1.5)
+            p:SetRunSpeed(curRunSpeed * 2.2)
+        end,
         ["at the end of the day all the foundation does is fucking nothing at all except make everything look pretty and pink its so stupid and so dumb the foundation deserves to be destroyed by all means possible"] = function(p)
             p:ChatPrint("The pink... the cuteness...")
 
@@ -256,6 +269,19 @@ gMail.Afflictions = {
             hook.Add("PlayerDeath", "gMailSCP_RemoveColorServer" .. p:SteamID(), function(player)
                 if player == p then
                     net.Start("gMailSCP_RemovePlayerColor")
+                    net.Send(player)
+                end
+            end)
+        end,
+        ["all these toys all over the world arent delivered by santa theyre imagined by something and just thrown into the world is so fucking crazy i hate it so much how people just believe that these santas can create so much toys its the god damn anomaly doing it"] = function(p)
+            p:ChatPrint("The toys are coming")
+
+            net.Start("gMailSCP_StartToyTown")
+            net.Send(p)
+
+            hook.Add("PlayerDeath", "gMailSCP_RemoveToyTown" .. p:SteamID(), function(player)
+                if player == p then
+                    net.Start("gMailSCP_RemovePlayerToyTown")
                     net.Send(player)
                 end
             end)
