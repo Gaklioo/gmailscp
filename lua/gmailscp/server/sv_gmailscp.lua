@@ -13,7 +13,6 @@ function _P:GiveAffliction(func)
 
     if func and isfunction(func) then
         func(self)
-        print("[gMailSCP] Affliction Given To" .. self:Name())
         self:SetAfflicted(true)
     else
         vderma:CreateErrorPopup(self, "SCP-7573", "You feel something strange in your stomach...")
@@ -52,7 +51,6 @@ function _P:IsAfflicted()
 end
 
 function _P:InitAfflictions()
-    print("[gMailSCP] Gave affliction status to ply", self:Name())
     self:SetAfflicted(false)
 end
 

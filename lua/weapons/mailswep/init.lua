@@ -92,7 +92,7 @@ function SWEP:SecondaryAttack()
     droppedMail:SetAngles(Angle(0, ply:EyeAngles().y, 0))
     droppedMail:Spawn()
     droppedMail:DropToFloor()
-    droppedMail:SetNW2Entity("IntendedPlayer", self:GetNW2Entity("IntendedPlayer"))
+    droppedMail:SetNW2Entity("IntendedPlayer", intendedPlayer)
 
     ply:StripWeapon("mailswep")
 end

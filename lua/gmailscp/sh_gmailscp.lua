@@ -82,13 +82,13 @@ function markov:Generate(n)
         local nextWords = self.chain[current]
         if not nextWords or #nextWords == 0 then
             current = keys[math.random(#keys)]
+            table.insert(output, current)
         else
             local nextWord = nextWords[math.random(#nextWords)]
             local wordOne, wordTwo = current:match("^(%S+)%s+(%S+)$")
             current = wordTwo .. " " .. nextWord
+            table.insert(output, nextWord)
         end
-
-        table.insert(output, current)
     end
 
     return table.concat(output, " ")
@@ -111,7 +111,8 @@ gMail.TrainingWords = {
     "%s omega-1 laws left hand do nothing for the foundation what so ever. they only sit there and protect the ethics committee beacuse they think they are so important that they need guards to sit there and be there for them all the time. ive never seen a more useless group than omega1. they think they are the enforcers of ethics words but in reality they sit there and get fat all day. a bunch of idiots with guns is what they are and theyre hated so much.",
     "%s alpha-1 red right hand are the biggest waste of an mtf that there has ever been within the foundation. a bunch of moronic idiots that do nothing but surround themselves with the ego of the o5 council. i mean hell even o5-13 is better than the smartest alpha1 member, and shes one of the damn worst members of the stupid council. i hate the o5 council and everything they do beacuse they do absolutely nothing at all, and they are just a waste of space along with alpha1.",
     "gensec is the definition of idiots within the foundation. there is nothing more in this earth than %s would rather have then killing all of gensec and getting rid of them all. they are a bunch of useless idiots who do nothing within the foundation at all. they are extremly useless and so shitty at their job that they should all be fired and the entire command should be wiped from the top down. the day that gensec dies is the day that i am truly happy within this life.",
-    "research does nothing for the foundation at fucking all. they are supposed to sit there and do their job but in reality they do fuck all. %s has seen them literally sitting their complaining for 10 hours straight instead of actually researching and doing their job. this stupid command team does nothing for the foundation and i swear there is no reason at all that they should exist. the foundation says they are important but holy shit in reality they doing nothing for us at all beacuse they are just a pain in the ass for everbody."            
+    "research does nothing for the foundation at fucking all. they are supposed to sit there and do their job but in reality they do fuck all. %s has seen them literally sitting their complaining for 10 hours straight instead of actually researching and doing their job. this stupid command team does nothing for the foundation and i swear there is no reason at all that they should exist. the foundation says they are important but holy shit in reality they doing nothing for us at all beacuse they are just a pain in the ass for everbody.",
+    "i thikn really that %s is a reality bender. there is sometimes that ill watch someone shoot at him, and the bullets will just never hit him. it is the weirdest thing in the world and i swear that they are able to dodge bullets without any issue like a reality bender would. it is the oddest thing in the world and they should really be fired because i swear that they are a type green. it is an idiotic thing to have a type green working as a foundation staff member because that is just danger waiting to happen at any point."            
 }
 
 hook.Add("Initialize", "gMailSCP_InitializeMarkovChain", function()
@@ -124,6 +125,7 @@ hook.Add("Initialize", "gMailSCP_InitializeMarkovChain", function()
     end
 end)
 
+--It might be better to possibly add a tag to each of these functions, and the first occurance of the tag in the randomly generated stuff is used? maybe? will debate upon it but a thought for now
 gMail.Afflictions = {
     function(p) 
         local timerName = gMail.GetTimerName(p)
@@ -234,12 +236,12 @@ gMail.Afflictions = {
             end)
         end
     end,
-
+   
     function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
-            if not gMail.TeamIDs then
+            if table.IsEmpty(gMail.TeamIDs) then
                 gMail.TeamIDs = {}
                 for team, data in pairs(team.GetAllTeams()) do
                     if data.Name then
@@ -267,6 +269,34 @@ gMail.Afflictions = {
                 gMail.ForceShoot(p)
             end)
         end
+    end,
+
+    function(p)
+        local timerName = gMail.GetTimerName(p)
+
+        if not timer.Exists(timerName) then
+            timer.Create(timerName, 2, 0, function()
+                if not IsValid(p) then
+                    return 
+                end
+
+                local radius = 500
+                local origin = p:GetPos()
+
+                for _, ent in ipairs(ents.FindInSphere(origin, radius)) do
+                    if not IsValid(ent) then continue end
+                    if ent:GetClass() == "prop_physics" or ent:IsWeapon() then continue end
+
+                    local phys = ent:GetPhysicsObject()
+
+                    if IsValid(phys) and phys:IsMotionEnabled() then
+                        local velocity = phys:GetVelocity()
+
+                        phys:SetVelocity(velocity * 0)
+                    end
+                end
+            end)
+        end
     end
 }
 
@@ -282,6 +312,11 @@ function gMail.GetAffliction(ply, shouldGive)
     end
 
     local message = markov:Generate(200)
+    if not message == "" then
+        markov:Train(sentence:gsub("%%s", "player"))
+        message = markov:Generate(200)
+    end
+
     local finalMessage = message:gsub("player", ply:Name())
     local affliction = gMail.Afflictions[math.random(#gMail.Afflictions)]
 
