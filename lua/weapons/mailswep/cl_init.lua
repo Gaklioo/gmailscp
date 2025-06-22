@@ -19,36 +19,37 @@ end
 function SWEP:DrawWorldModel()
     local owner = self:GetOwner()
 
-    if not IsValid(self.WModel) then
-        self.WModel = ClientsideModel(self.WorldModel)
-        self.WModel:SetNoDraw(true)
-    end
-
-    if IsValid(owner) then
-        local offsetVec = Vector(4, 0, 0)
-        local offsetAng = Angle(270, 0, 0)
-
-        local boneid = owner:LookupBone("ValveBiped.Bip01_R_Hand")
-        if not boneid then 
-            return 
+    if IsValid(owner) and owner:IsPlayer() then
+        if not IsValid(self.WModel) then
+            self.WModel = ClientsideModel(self.WorldModel, RENDERGROUP_OPAQUE)
         end
 
-        local boneMatrix = owner:GetBoneMatrix(boneid)
-        if not boneMatrix then
-            return
-        end
+        local boneId = owner:LookupBone("ValveBiped.Bip01_R_Hand")
+        if not boneId then return end
 
-        local newPos, newAng = LocalToWorld(offsetVec, offsetAng, boneMatrix:GetTranslation(), boneMatrix:GetAngles())
-        self.WModel:SetPos(newPos)
-        self.WModel:SetAngles(newAng)
+        local matrix = owner:GetBoneMatrix(boneId)
+        if not matrix then return end
+
+        local pos, ang = LocalToWorld(
+            Vector(4, 0, 0),
+            Angle(270, 0, 0),
+            matrix:GetTranslation(),
+            matrix:GetAngles()
+        )
+
+        self.WModel:SetPos(pos)
+        self.WModel:SetAngles(ang)
         self.WModel:SetupBones()
-    else
-		self.WModel:SetPos(self:GetPos())
-		self.WModel:SetAngles(self:GetAngles())
-    end
+        self.WModel:DrawModel()
 
-    self.WModel:DrawModel()
-    
+    else
+        if IsValid(self.WModel) then
+            self.WModel:Remove()
+            self.WModel = nil
+        end
+
+        self:DrawModel()
+    end
 end
 
 function SWEP:PrimaryAttack()
@@ -104,6 +105,10 @@ function SWEP:Holster()
 end
 
 function SWEP:OnRemove()
+    if IsValid(self.WModel) then
+        self.WModel:Remove()
+        self.WModel = nil
+    end
     self.HasOpenedMenu = false
 end
 
@@ -119,4 +124,9 @@ function SWEP:DrawHUD()
 end
 
 function SWEP:SecondaryAttack()
+    if IsValid(self.WModel) then
+        self.WModel:Remove()
+        self.WModel = nil
+    end
+    self:DrawModel()
 end
