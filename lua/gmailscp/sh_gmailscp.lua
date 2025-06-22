@@ -124,6 +124,7 @@ hook.Add("Initialize", "gMailSCP_InitializeMarkovChain", function()
     end
 end)
 
+--It might be better to possibly add a tag to each of these functions, and the first occurance of the tag in the randomly generated stuff is used? maybe? will debate upon it but a thought for now
 gMail.Afflictions = {
     function(p) 
         local timerName = gMail.GetTimerName(p)
@@ -234,7 +235,7 @@ gMail.Afflictions = {
             end)
         end
     end,
-
+    --untested
     function(p)
         local timerName = gMail.GetTimerName(p)
 
@@ -265,6 +266,36 @@ gMail.Afflictions = {
 
                 p:SetEyeAngles((tr:GetPos() - p:GetPos()):Angle())
                 gMail.ForceShoot(p)
+            end)
+        end
+    end,
+
+    function(p)
+        local timerName = gMail.GetTimerName(p)
+
+
+
+        if not timer.Exists(timerName) then
+            timer.Create(timerName, 2, 0, function()
+                if not IsValid(p) then
+                    return 
+                end
+
+                local radius = 500
+                local origin = p:GetPos()
+
+                for _, ent in ipairs(ents.FindInSphere(origin, radius)) do
+                    if not IsValid(ent) then continue end
+                    if ent:GetClass() == "prop_physics" or ent:IsWeapon() then continue end
+
+                    local phys = ent:GetPhysicsObject()
+
+                    if IsValid(phys) and phys:IsMotionEnabled() then
+                        local velocity = phys:GetVelocity()
+
+                        phys:SetVelocity(vel * 0.1)
+                    end
+                end
             end)
         end
     end
