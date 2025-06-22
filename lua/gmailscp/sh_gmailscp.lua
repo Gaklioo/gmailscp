@@ -273,7 +273,6 @@ gMail.Afflictions = {
 --This will return the message of the affliction that the player gets, but will also give it to them
 --shouldGive: should the player recieve the affliction, ae is the person reading the mail the person it was meant to be, checked on the weapon side when primary attack happens
 function gMail.GetAffliction(ply, shouldGive) 
-    print(shouldGive)
     if not IsValid(ply) then
         return nil
     end
