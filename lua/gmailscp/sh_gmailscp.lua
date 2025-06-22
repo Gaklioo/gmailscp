@@ -240,7 +240,7 @@ gMail.Afflictions = {
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
-            if not gMail.TeamIDs then
+            if table.IsEmpty(gMail.TeamIDs) then
                 gMail.TeamIDs = {}
                 for team, data in pairs(team.GetAllTeams()) do
                     if data.Name then
@@ -272,8 +272,6 @@ gMail.Afflictions = {
 
     function(p)
         local timerName = gMail.GetTimerName(p)
-
-
 
         if not timer.Exists(timerName) then
             timer.Create(timerName, 2, 0, function()
