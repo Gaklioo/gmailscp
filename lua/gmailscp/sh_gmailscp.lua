@@ -23,20 +23,29 @@ end
 function gMail.ForceShoot(p)
     p:ConCommand("+attack")
     timer.Simple(0.1, function()
-        if IsValid(p) then p:ConCommand("-attack") end
+        if IsValid(p) then 
+            p:ConCommand("-attack") 
+        end
     end)
 end
 
 function gMail.ForceJump(p)
     p:ConCommand("+jump")
     timer.Simple(0.1, function()
-        if IsValid(p) then p:ConCommand("-jump") end
+        if IsValid(p) then 
+            p:ConCommand("-jump") 
+        end
     end)
 end
 
 function gMail.GetTimerName(p)  
-    if not IsValid(p) then return end
-    if not p:IsPlayer() then return end
+    if not IsValid(p) then 
+        return 
+    end
+
+    if not p:IsPlayer() then 
+        return 
+    end
 
     return "gMailSCP_Affliction_" .. p:SteamID()
 end
@@ -61,7 +70,7 @@ function markov:Train(text)
         local key = words[i] .. " " .. words[i + 1]
         local nextWord = words[i + 2]
 
-         if not self.chain[key] then
+        if not self.chain[key] then
             self.chain[key] = {}
         end
         table.insert(self.chain[key], nextWord)
@@ -107,12 +116,13 @@ gMail.TrainingWords = {
     "in this world there is fucking nothing more than i hate than %s. they are lazy and incompetent and everytime they get a damn eye exam they always fail. every single time this idiot gets an eye exam they fail it and there is fucking nothing in this world more than i hate than them trying to claim they passed. an idiot who never gets a proper eye exam and then complain how perfect their eyesight is when they cant see shit. a bunch of fucking moronic words coming from the biggest idiot in the goddamn foundation.",
     "the foundation is so useless because of %s. theyre so bald i think that id fucking get blinded by their scalp if they ever walked underneath light. they never will though because theyre nothing but a stupid fucking goblin that sits in their little hidey hole all day like some goddamned idiot or something. there is nothing more in this foundation that i hate than them. they are the most useless idiot i have ever seen and do nothing but waste space and air within the foundation because they are the biggest bald bitch in the world",
     "the ethics in this foundation are the biggest waste of resources that i %s have ever seen. they just sit there and deny every test because they think that they are the gods of the foundation and nothing is above them. they think they are absolute but in reality they are the biggest goddamned useless people in the world. without them research would be so far ahead, and life would be so much better without their stupid interference within the foundation and its normal operations. a bunch of useless idiots is what they are.",
-    "the overseer %s council are a bunch of morons who have no clue what right and wrong truly are. they just meet in their space and talk about how cool and secretive they are. its so stupid how they think they are above everything and everything they do are the absolute biggest waste of idiotic space in the world. they do nothing but act superior to the rest of the foundation and waste our time. without them the foundation would be so far ahead in the correct procedures because they are so useless its insane. they just sit there and do nothing for the foundation.",
-    "%s omega-1 laws left hand do nothing for the foundation what so ever. they only sit there and protect the ethics committee because they think they are so important that they need guards to sit there and be there for them all the time. ive never seen a more useless group than omega1. they think they are the enforcers of ethics words but in reality they sit there and get fat all day. a bunch of idiots with guns is what they are and theyre hated so much.",
-    "%s alpha-1 red right hand are the biggest waste of an mtf that there has ever been within the foundation. a bunch of moronic idiots that do nothing but surround themselves with the ego of the o5 council. i mean hell even o5-13 is better than the smartest alpha1 member, and shes one of the damn worst members of the stupid council. i hate the o5 council and everything they do because they do absolutely nothing at all, and they are just a waste of space along with alpha1.",
+    "the site inspectiors %s council are a bunch of morons who have no clue what right and wrong truly are. they just meet in their space and talk about how cool and secretive they are. its so stupid how they think they are above everything and everything they do are the absolute biggest waste of idiotic space in the world. they do nothing but act superior to the rest of the foundation and waste our time. without them the foundation would be so far ahead in the correct procedures because they are so useless its insane. they just sit there and do nothing for the foundation.",
     "gensec is the definition of idiots within the foundation. there is nothing more in this earth than %s would rather have than killing all of gensec and getting rid of them all. they are a bunch of useless idiots who do nothing within the foundation at all. they are extremely useless and so shitty at their job that they should all be fired and the entire command should be wiped from the top down. the day that gensec dies is the day that i am truly happy within this life.",
     "research does nothing for the foundation at fucking all. they are supposed to sit there and do their job but in reality they do fuck all. %s has seen them literally sitting there complaining for 10 hours straight instead of actually researching and doing their job. this stupid command team does nothing for the foundation and i swear there is no reason at all that they should exist. the foundation says they are important but holy shit in reality they do nothing for us at all because they are just a pain in the ass for everybody.",
-    "i think really that %s is a reality bender. there is sometimes that ill watch someone shoot at him, and the bullets will just never hit him. it is the weirdest thing in the world and i swear that they are able to dodge bullets without any issue like a reality bender would. it is the oddest thing in the world and they should really be fired because i swear that they are a type green. it is an idiotic thing to have a type green working as a foundation staff member because that is just danger waiting to happen at any point."
+    "i think really that %s is a reality bender. there is sometimes that ill watch someone shoot at him, and the bullets will just never hit him. it is the weirdest thing in the world and i swear that they are able to dodge bullets without any issue like a reality bender would. it is the oddest thing in the world and they should really be fired because i swear that they are a type green. it is an idiotic thing to have a type green working as a foundation staff member because that is just danger waiting to happen at any point.",
+    "i swear alpha-1 just gets away with whatever the hell they want. they are the biggest idiots of the foundation, and %s agrees. they are the biggest idiots ever, and the foundation would operate way better without their presence within the foundation. if they would just straight up disapper then all of the world would be better off, no one likes them anyway. a bunch of useless idiots that truly dont mean anything for the greator cause.",
+    "omega-1 members are the worst scum of the foundation. they truly dont do anything, they think they just sit there and make the site more ethical but in reality they dont do shit. they are a bunch of idiots that do nothing at all for us. they really just make the site worse, they claim to love ethics but they sit there and break it all the time. it really means nothing when those enforcing the rules break them, it just makes it worse for the rest of us."
+
 }
 
 hook.Add("Initialize", "gMailSCP_InitializeMarkovChain", function()
@@ -127,7 +137,7 @@ end)
 
 --It might be better to possibly add a tag to each of these functions, and the first occurance of the tag in the randomly generated stuff is used? maybe? will debate upon it but a thought for now
 gMail.Afflictions = {
-    function(p) 
+    ["trigger"] = function(p) 
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
@@ -140,7 +150,7 @@ gMail.Afflictions = {
         end
     end,
 
-    function(p)
+    ["drugs"] = function(p)
         local curWalkSpeed = p:GetWalkSpeed()
         local curRunSpeed = p:GetRunSpeed()
         local curDuckSpeed = p:GetDuckSpeed()
@@ -149,12 +159,12 @@ gMail.Afflictions = {
         p:SetDuckSpeed(curDuckSpeed * 1.5)
     end,
 
-    function(p)
+    ["laziest"] = function(p)
         p:SetWalkSpeed(1)
         p:SetRunSpeed(1)
     end,
 
-    function(p)
+    ["pink"] = function(p)
         net.Start("gMailSCP_ChangePlayerColor")
         net.Send(p)
 
@@ -167,14 +177,14 @@ gMail.Afflictions = {
         end)
     end,
 
-    function(p)
+    ["egos"] = function(p)
         local bone = p:LookupBone("ValveBiped.Bip01_Head1")
         if bone then
             p:ManipulateBoneScale(bone, Vector(2, 2, 2))
         end
     end,
 
-    function(p)
+    ["resources"] = function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
@@ -183,13 +193,12 @@ gMail.Afflictions = {
                     timer.Remove(timerName)
                 end
 
-                p:Say("/oc [F>ALL] I hate the ethics committee and the overseer council. A bunch of idiots.")
-                p:Say("/oc [F>ALL] Alpha-1 'Red Right Hand' and Omega-1 'Laws left hand' are idiots.")
+                p:Say("/oc [ME>GOC] I want to defect. Please assist me.")
             end)
         end
     end,
 
-    function(p)
+    ["research"] = function(p)
         hook.Add("PlayerSay", "gMailSCP_ChangeText" .. p:SteamID(), function(ply, text)
             if ply == p then
                 local newMessage = util.Base64Encode(text)
@@ -206,7 +215,7 @@ gMail.Afflictions = {
         end)
     end,
 
-    function(p)
+    ["eye"] = function(p)
         net.Start("gMailSCP_StartToyTown")
         net.Send(p)
 
@@ -220,7 +229,7 @@ gMail.Afflictions = {
         end)
     end,
 
-    function(p)
+    ["gods"] = function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
@@ -237,7 +246,7 @@ gMail.Afflictions = {
         end
     end,
    
-    function(p)
+    ["gensec"] = function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
@@ -257,11 +266,18 @@ gMail.Afflictions = {
 
                 local targetTeam = math.random(1, #gMail.TeamIDs)
                 local teamID = gMail.TeamIDs[targetTeam]
-                if not teamID then return end
+                if not teamID then 
+                    return 
+                end
 
                 local tr = p:GetEyeTrace().Entity
-                if not IsValid(tr) then return end
-                if not tr:IsPlayer() then return end
+                if not IsValid(tr) then 
+                    return 
+                end
+
+                if not tr:IsPlayer() then 
+                    return 
+                end
 
                 if tr:Team() != targetTeam then return end
 
@@ -271,7 +287,7 @@ gMail.Afflictions = {
         end
     end,
 
-    function(p)
+    ["green"] = function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
@@ -284,8 +300,12 @@ gMail.Afflictions = {
                 local origin = p:GetPos()
 
                 for _, ent in ipairs(ents.FindInSphere(origin, radius)) do
-                    if not IsValid(ent) then continue end
-                    if ent:GetClass() == "prop_physics" or ent:IsWeapon() then continue end
+                    if not IsValid(ent) then 
+                        continue 
+                    end
+                    if ent:GetClass() == "prop_physics" or ent:IsWeapon() then 
+                        continue 
+                    end
 
                     local phys = ent:GetPhysicsObject()
 
@@ -297,7 +317,7 @@ gMail.Afflictions = {
                 end
             end)
         end
-    end
+    end,
 }
 
 --This will return the message of the affliction that the player gets, but will also give it to them
@@ -313,14 +333,30 @@ function gMail.GetAffliction(ply, shouldGive)
 
     local message = markov:Generate(200)
     if message == "" then
-        markov:Train(sentence:gsub("%%s", "player"))
+        --fallback incase sh file is ever saved
+        for _, sentence in ipairs(gMail.TrainingWords) do
+            markov:Train(sentence:gsub("%%s", "player"))
+        end
         message = markov:Generate(200)
     end
 
     local finalMessage = message:gsub("player", ply:Name())
-    local affliction = gMail.Afflictions[math.random(#gMail.Afflictions)]
+    local affliction = nil
 
-    if shouldGive then
+    for word in finalMessage:gmatch("%w+") do
+        if gMail.Afflictions[word] then
+            print(word)
+            affliction = gMail.Afflictions[word]
+            break
+        end
+    end
+
+    if affliction and isfunction(affliction) and shouldGive then
+        ply:GiveAffliction(affliction)
+    else
+        --Fall back incase no message is matched
+        affliction = gMail.Afflictions[math.random(1, #gMail.Afflictions)]
+
         ply:GiveAffliction(affliction)
     end
 

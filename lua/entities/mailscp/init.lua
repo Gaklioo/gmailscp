@@ -69,8 +69,10 @@ function ENT:Use(user)
 
     vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "10 Minutes to deliver this mail.")
 
-    timer.Create(gMail.PlayerHurtTimerName, gMail.PlayerHurtTime, 1, function()
+    timer.Create(gMail.PlayerHurtTimerName .. user:SteamID(), gMail.PlayerHurtTime, 1, function()
         vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "You have failed to deliver your mail.")
         user:TakeDamage(self.FailureDamage)
+
+        user:StripWeapon("mailswep")
     end)
 end

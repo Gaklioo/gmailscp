@@ -20,8 +20,14 @@ function ENT:Initialize()
 end
 
 function ENT:Use(user)
-    if not IsValid(user) then return end
-    if not user:IsPlayer() then return end
+    if not IsValid(user) then 
+        return 
+    end
+
+    if not user:IsPlayer() then 
+        return 
+    end
+    
     local swep = user:Give("mailswep")
     swep:SetNW2Entity("IntendedPlayer", self:GetNW2Entity("IntendedPlayer"))
 

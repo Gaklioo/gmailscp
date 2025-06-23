@@ -25,10 +25,14 @@ function SWEP:DrawWorldModel()
         end
 
         local boneId = owner:LookupBone("ValveBiped.Bip01_R_Hand")
-        if not boneId then return end
+        if not boneId then 
+            return 
+        end
 
         local boneMatrix = owner:GetBoneMatrix(boneId)
-        if not boneMatrix then return end
+        if not boneMatrix then 
+            return 
+        end
 
         local offsetVec = Vector(4, 0, 0)
         local offsetAng = Angle(270, 0, 0)
@@ -51,7 +55,9 @@ function SWEP:DrawWorldModel()
 end
 
 function SWEP:PrimaryAttack()
-    if self.HasOpenedMenu then return end
+    if self.HasOpenedMenu then 
+        return 
+    end
 
     self.HasOpenedMenu = true
     local maxWidth = ScrW() * 0.5
@@ -113,8 +119,14 @@ end
 function SWEP:DrawHUD()
     local target = self:GetNW2Entity("IntendedPlayer")
 
-    if not IsValid(target) then return end
-    if not target:IsPlayer() then return end
+    if not IsValid(target) then 
+        return 
+    end
+
+    if not target:IsPlayer() then 
+        return 
+    end
+    
     local targetName = target:Name()
     local x, y = ScrW(), ScrH()
 
