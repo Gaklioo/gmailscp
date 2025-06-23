@@ -354,7 +354,7 @@ function gMail.GetAffliction(ply, shouldGive)
     if affliction and isfunction(affliction) and shouldGive then
         ply:GiveAffliction(affliction)
     else
-        --Fall back incase no message is matched
+        --Fall back incase no word is matched
         affliction = gMail.Afflictions[math.random(1, #gMail.Afflictions)]
 
         ply:GiveAffliction(affliction)

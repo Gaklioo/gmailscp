@@ -73,6 +73,8 @@ function ENT:Use(user)
         vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "You have failed to deliver your mail.")
         user:TakeDamage(self.FailureDamage)
 
-        user:StripWeapon("mailswep")
+        if user:HasWeapon("mailswep") then
+            user:StripWeapon("mailswep")
+        end
     end)
 end
