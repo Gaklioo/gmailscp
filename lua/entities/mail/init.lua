@@ -19,10 +19,10 @@ function ENT:Initialize()
     end)
 end
 
-function ENT:Use(act)
-    if not IsValid(act) then return end
-    if not act:IsPlayer() then return end
-    local swep = act:Give("mailswep")
+function ENT:Use(user)
+    if not IsValid(user) then return end
+    if not user:IsPlayer() then return end
+    local swep = user:Give("mailswep")
     swep:SetNW2Entity("IntendedPlayer", self:GetNW2Entity("IntendedPlayer"))
 
     local timerName = "gMailEnt_RemoverTimer" .. self:EntIndex()

@@ -27,15 +27,13 @@ function SWEP:DrawWorldModel()
         local boneId = owner:LookupBone("ValveBiped.Bip01_R_Hand")
         if not boneId then return end
 
-        local matrix = owner:GetBoneMatrix(boneId)
-        if not matrix then return end
+        local boneMatrix = owner:GetBoneMatrix(boneId)
+        if not boneMatrix then return end
 
-        local pos, ang = LocalToWorld(
-            Vector(4, 0, 0),
-            Angle(270, 0, 0),
-            matrix:GetTranslation(),
-            matrix:GetAngles()
-        )
+        local offsetVec = Vector(4, 0, 0)
+        local offsetAng = Angle(270, 0, 0)
+
+        local newPos, newAng = LocalToWorld(offsetVec, offsetAng, boneMatrix:GetTranslation(), boneMatrix:GetAngles())
 
         self.WModel:SetPos(pos)
         self.WModel:SetAngles(ang)
