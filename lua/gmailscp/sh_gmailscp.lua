@@ -312,7 +312,7 @@ function gMail.GetAffliction(ply, shouldGive)
     end
 
     local message = markov:Generate(200)
-    if not message == "" then
+    if message == "" then
         markov:Train(sentence:gsub("%%s", "player"))
         message = markov:Generate(200)
     end
