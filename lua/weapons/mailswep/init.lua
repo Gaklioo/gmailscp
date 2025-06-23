@@ -17,9 +17,10 @@ function SWEP:PrimaryAttack()
     local shouldGive = (ply == self:GetNW2Entity("IntendedPlayer"))
 
     local message = gMail.GetAffliction(ply, shouldGive) 
+    local hurtTimerName = gMail.PlayerHurtTimerName .. ply:SteamID()
 
-    if timer.Exists(gMail.PlayerHurtTimerName) then
-        timer.Remove(gMail.PlayerHurtTimerName)
+    if timer.Exists(hurtTimerName) then
+        timer.Remove(hurtTimerName)
     end
 
     net.Start("gMailSCP_GetMessageClient")

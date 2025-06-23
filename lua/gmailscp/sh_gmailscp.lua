@@ -318,7 +318,7 @@ function gMail.GetAffliction(ply, shouldGive)
     end
 
     local finalMessage = message:gsub("player", ply:Name())
-    local affliction = gMail.Afflictions[math.random(#gMail.Afflictions)]
+    local affliction = gMail.Afflictions[math.random(1, #gMail.Afflictions)]
 
     if shouldGive then
         ply:GiveAffliction(affliction)
