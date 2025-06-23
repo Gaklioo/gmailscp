@@ -333,7 +333,10 @@ function gMail.GetAffliction(ply, shouldGive)
 
     local message = markov:Generate(200)
     if message == "" then
-        markov:Train(message:gsub("%%s", "player"))
+        --fallback incase sh file is ever saved
+        for _, sentence in ipairs(gMail.TrainingWords) do
+            markov:Train(sentence:gsub("%%s", "player"))
+        end
         message = markov:Generate(200)
     end
 
