@@ -256,9 +256,7 @@ gMail.Afflictions = {
 
                 if not tr:IsPlayer() then 
                     return 
-                end
-
-                print("shooting")
+                end 
 
                 p:SetEyeAngles((tr:GetPos() - p:GetPos()):Angle())
                 gMail.ForceShoot(p)
