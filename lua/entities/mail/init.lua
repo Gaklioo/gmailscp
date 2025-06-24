@@ -29,7 +29,7 @@ function ENT:Use(user)
     end
     
     local swep = user:Give("mailswep")
-    swep:SetNW2Entity("IntendedPlayer", self:GetNW2Entity("IntendedPlayer"))
+    swep:SetNW2Entity("intendedPlayer", self:GetNW2Entity("intendedPlayer"))
 
     local timerName = "gMailEnt_RemoverTimer" .. self:EntIndex()
 

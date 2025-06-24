@@ -7,5 +7,5 @@ ENT.Spawnable = true -- Remove when done testing
 ENT.FailureDamage = math.random(15, 40)
 
 function ENT:SetupDataTables()
-    self:SetNW2Int("Cooldown", 0)
+    self:SetNW2Int("cooldown", 0)
 end

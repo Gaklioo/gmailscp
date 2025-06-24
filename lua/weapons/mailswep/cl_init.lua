@@ -39,8 +39,8 @@ function SWEP:DrawWorldModel()
 
         local newPos, newAng = LocalToWorld(offsetVec, offsetAng, boneMatrix:GetTranslation(), boneMatrix:GetAngles())
 
-        self.WModel:SetPos(pos)
-        self.WModel:SetAngles(ang)
+        self.WModel:SetPos(newPos)
+        self.WModel:SetAngles(newAng)
         self.WModel:SetupBones()
         self.WModel:DrawModel()
 
@@ -117,7 +117,7 @@ function SWEP:OnRemove()
 end
 
 function SWEP:DrawHUD()
-    local target = self:GetNW2Entity("IntendedPlayer")
+    local target = self:GetNW2Entity("intendedPlayer")
 
     if not IsValid(target) then 
         return 
