@@ -6,5 +6,5 @@ ENT.Category = "SCPS"
 ENT.Spawnable = true -- Remove when done testing
 
 function ENT:SetupDataTables()
-    self:SetNW2Entity("IntendedPlayer", nil)
+    self:SetNW2Entity("intendedPlayer", nil)
 end

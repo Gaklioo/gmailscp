@@ -14,7 +14,7 @@ gMail.GetAffliction(ply, shouldGive)
 util.AddNetworkString("gMailSCP_GetMessageClient")
 function SWEP:PrimaryAttack()
     local ply = self:GetOwner()
-    local shouldGive = (ply == self:GetNW2Entity("IntendedPlayer"))
+    local shouldGive = (ply == self:GetNW2Entity("intendedPlayer"))
 
     local message = gMail.GetAffliction(ply, shouldGive) 
     local hurtTimerName = gMail.PlayerHurtTimerName .. ply:SteamID()
@@ -49,7 +49,7 @@ function SWEP:SendMessageClient()
         return 
     end
 
-    local intendedPlayer = self:GetNW2Entity("IntendedPlayer") 
+    local intendedPlayer = self:GetNW2Entity("intendedPlayer") 
 
     if ply != intendedPlayer then
         ply:ChatPrint("Dont you know its illegal to read mail thats not yours? How dispicible.")
@@ -59,7 +59,7 @@ function SWEP:SendMessageClient()
         end)
     end
 
-    self:SetNW2Entity("IntendedPlayer", nil)
+    self:SetNW2Entity("intendedPlayer", nil)
 
 end
 
@@ -80,7 +80,7 @@ function SWEP:SecondaryAttack()
         return 
     end
 
-    local intendedPlayer = self:GetNW2Entity("IntendedPlayer")
+    local intendedPlayer = self:GetNW2Entity("intendedPlayer")
 
     if not intendedPlayer then
         return 
@@ -93,7 +93,7 @@ function SWEP:SecondaryAttack()
     droppedMail:SetAngles(Angle(0, ply:EyeAngles().y, 0))
     droppedMail:Spawn()
     droppedMail:DropToFloor()
-    droppedMail:SetNW2Entity("IntendedPlayer", intendedPlayer)
+    droppedMail:SetNW2Entity("intendedPlayer", intendedPlayer)
 
     ply:StripWeapon("mailswep")
 end

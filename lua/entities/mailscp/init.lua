@@ -15,7 +15,7 @@ function ENT:Initialize()
         phys:Wake()
     end
 
-    self:SetNW2Int("Cooldown", 0)
+    self:SetNW2Int("cooldown", 0)
 end
 
 function ENT:GetRandomPlayer(tryCount)
@@ -32,7 +32,7 @@ function ENT:GetRandomPlayer(tryCount)
 
         if num == numberStoper then
             if IsValid(ply) and not gMail.BlacklistedTeams[ply:Team()] then
-                self:SetNW2Entity("IntendedPlayer", ply)
+                self:SetNW2Entity("intendedPlayer", ply)
                 return
             else
                 return self:GetRandomPlayer(tryCount + 1) --Recursion saftey measure
@@ -56,15 +56,15 @@ function ENT:Use(user)
         return 
     end
 
-    self:SetNW2Int("Cooldown", time)
+    self:SetNW2Int("cooldown", time)
 
     local swep = user:Give("mailswep")
 
     if IsValid(swep) then
         self:GetRandomPlayer(0)
-        local intendedPlayer = self:GetNW2Entity("IntendedPlayer")
+        local intendedPlayer = self:GetNW2Entity("intendedPlayer")
         if not IsValid(intendedPlayer) then return end
-        swep:SetNW2Entity("IntendedPlayer", intendedPlayer)
+        swep:SetNW2Entity("intendedPlayer", intendedPlayer)
     end
 
     vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "10 Minutes to deliver this mail.")
@@ -73,6 +73,8 @@ function ENT:Use(user)
         vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "You have failed to deliver your mail.")
         user:TakeDamage(self.FailureDamage)
 
-        user:StripWeapon("mailswep")
+        if user:HasWeapon("mailswep") then
+            user:StripWeapon("mailswep")
+        end
     end)
 end

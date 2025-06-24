@@ -6,13 +6,6 @@ gMail.PlayerAfflictionTime = 360
 gMail.MailDespawnTime = 300
 gMail.PlayerHurtTimerName = "gMailSCP_Affliction_KillPlayer"
 
-gMail.TeamIDs = {}
-
---Teams in this category are ignored.
-gMail.BlacklistedTeams = {
-    ["Admin On Duty"] = true
-}
-
 if SERVER then
     util.AddNetworkString("gMailSCP_ChangePlayerColor")
     util.AddNetworkString("gMailSCP_RemovePlayerColor")    
@@ -245,33 +238,19 @@ gMail.Afflictions = {
             end)
         end
     end,
-   
+
     ["gensec"] = function(p)
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
-            if table.IsEmpty(gMail.TeamIDs) then
-                gMail.TeamIDs = {}
-                for team, data in pairs(team.GetAllTeams()) do
-                    if data.Name then
-                        gMail.TeamIDs[data.Name] = team 
-                    end
-                end
-            end
-
             timer.Create(timerName, 15, 0, function()
                 if not IsValid(p) then
-                    timer.Remove(timerName)
-                end
-
-                local targetTeam = math.random(1, #gMail.TeamIDs)
-                local teamID = gMail.TeamIDs[targetTeam]
-                if not teamID then 
-                    return 
+                    return
                 end
 
                 local tr = p:GetEyeTrace().Entity
-                if not IsValid(tr) then 
+
+                if not IsValid(tr) then
                     return 
                 end
 
@@ -279,7 +258,7 @@ gMail.Afflictions = {
                     return 
                 end
 
-                if tr:Team() != targetTeam then return end
+                print("shooting")
 
                 p:SetEyeAngles((tr:GetPos() - p:GetPos()):Angle())
                 gMail.ForceShoot(p)
@@ -351,12 +330,25 @@ function gMail.GetAffliction(ply, shouldGive)
         end
     end
 
-    if affliction and isfunction(affliction) and shouldGive then
-        ply:GiveAffliction(affliction)
-    else
-        --Fall back incase no message is matched
-        affliction = gMail.Afflictions[math.random(1, #gMail.Afflictions)]
+    if not shouldGive then
+        return finalMessage
+    end
 
+    if affliction and isfunction(affliction) then
+        print("given affliction")
+        ply:GiveAffliction(affliction) 
+    else
+        --Fall back incase no word is matched
+        local afflicitonKeys = {}
+
+        for key in pairs(gMail.Afflictions) do
+            table.insert(afflicitonKeys, key)
+        end
+
+        print("different affliction")
+        local key = afflicitonKeys[math.random(1, #afflicitonKeys)]
+        affliction = gMail.Afflictions[key]
+        print(affliction)
         ply:GiveAffliction(affliction)
     end
 

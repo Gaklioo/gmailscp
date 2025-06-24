@@ -29,5 +29,5 @@ function SWEP:Initialize()
 end
 
 function SWEP:SetupDataTables()
-    self:SetNW2Entity("IntendedPlayer", nil)
+    self:SetNW2Entity("intendedPlayer", nil)
 end
