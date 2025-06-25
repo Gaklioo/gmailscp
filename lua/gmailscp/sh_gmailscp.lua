@@ -226,13 +226,13 @@ gMail.Afflictions = {
         local timerName = gMail.GetTimerName(p)
 
         if not timer.Exists(timerName) then
-            timer.Create(timerName, 75, 0, function()
+            timer.Create(timerName, 5, 0, function()
                 if not IsValid(p) then
                     timer.Remove(timerName)
                 end
 
                 local curJumpPower = p:GetJumpPower()
-                p:SetJumpPower(curJumpPower * 100)
+                p:SetJumpPower(100)
                 gMail.ForceJump(p)
                 p:SetJumpPower(curJumpPower)
             end)
@@ -322,7 +322,6 @@ function gMail.GetAffliction(ply, shouldGive)
 
     for word in finalMessage:gmatch("%w+") do
         if gMail.Afflictions[word] then
-            print(word)
             affliction = gMail.Afflictions[word]
             break
         end
@@ -333,7 +332,6 @@ function gMail.GetAffliction(ply, shouldGive)
     end
 
     if affliction and isfunction(affliction) then
-        print("given affliction")
         ply:GiveAffliction(affliction) 
     else
         --Fall back incase no word is matched
@@ -343,10 +341,8 @@ function gMail.GetAffliction(ply, shouldGive)
             table.insert(afflicitonKeys, key)
         end
 
-        print("different affliction")
         local key = afflicitonKeys[math.random(1, #afflicitonKeys)]
         affliction = gMail.Afflictions[key]
-        print(affliction)
         ply:GiveAffliction(affliction)
     end
 

@@ -31,7 +31,7 @@ function ENT:GetRandomPlayer(tryCount)
     for _, ply in player.Iterator() do
 
         if num == numberStoper then
-            if IsValid(ply) and not gMail.BlacklistedTeams[ply:Team()] then
+            if IsValid(ply) then
                 self:SetNW2Entity("intendedPlayer", ply)
                 return
             else
