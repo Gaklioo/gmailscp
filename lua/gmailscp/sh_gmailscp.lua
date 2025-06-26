@@ -5,6 +5,7 @@ gMail.PlayerHurtTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.MailDespawnTime = 300
 gMail.PlayerHurtTimerName = "gMailSCP_Affliction_KillPlayer"
+gMail.UseDarkRP = true
 
 if SERVER then
     util.AddNetworkString("gMailSCP_ChangePlayerColor")

@@ -169,6 +169,10 @@ function SWEP:DrawHUD()
     
     local targetName = target:Name()
 
+    if gMail.UseDarkRP then
+        targetName = target:getDarkRPVar("rpname")
+    end
+
     if not self.PanelOpened then
         self:StartTargetPanel(targetName)
     end
