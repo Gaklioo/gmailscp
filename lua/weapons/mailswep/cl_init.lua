@@ -14,6 +14,7 @@ end)
 
 function SWEP:Initialize()
     self.WModel = ClientsideModel(self.WorldModel)
+    self.PanelOpened = false
 end
 
 function SWEP:DrawWorldModel()
@@ -116,6 +117,45 @@ function SWEP:OnRemove()
     self.HasOpenedMenu = false
 end
 
+function SWEP:StartTargetPanel(plyName)
+    local w, h = ScrW() / 10, ScrH() / 12
+
+    local panel = vgui.Create("DPanel")
+    panel:SetSize(w, h)
+    panel:SetPos(0, h)
+
+    local button = vderma:BarButton(panel)
+    button:SetText("Target: " .. plyName or "No Target")
+    button:Dock(FILL)
+    button:SetColor(vderma.PrimaryColor)
+
+    surface.SetFont(button:GetFont())
+    local textW, textH = surface.GetTextSize(button:GetText())
+
+    local padding = 10
+    panel:SetSize(textW + padding * 2, textH + padding)
+
+    self.PanelOpened = true
+
+    local owner = self:GetOwner()
+
+    panel.Think = function()
+        if not IsValid(owner) or not owner:Alive() then
+            panel:Remove()
+            self.PanelOpened = false
+            return
+        end
+
+        local wep = owner:GetActiveWeapon()
+
+        if not IsValid(wep) or wep:GetClass() != self:GetClass() then
+            self.PanelOpened = false
+            panel:Remove()
+            return
+        end
+    end
+end
+
 function SWEP:DrawHUD()
     local target = self:GetNW2Entity("intendedPlayer")
 
@@ -128,9 +168,14 @@ function SWEP:DrawHUD()
     end
     
     local targetName = target:Name()
-    local x, y = ScrW(), ScrH()
 
-    draw.DrawText("Target " .. targetName, "mailHudFont", x / 2, y - 100,  Color(0, 0, 0, 255), TEXT_ALIGN_CENTER)
+    if gMail.UseDarkRP then
+        targetName = target:getDarkRPVar("rpname")
+    end
+
+    if not self.PanelOpened then
+        self:StartTargetPanel(targetName)
+    end
 end
 
 function SWEP:SecondaryAttack()
