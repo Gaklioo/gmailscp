@@ -83,10 +83,10 @@ function markov:Generate(n)
     for i = 1, n do
         local nextWords = self.chain[current]
         if not nextWords or #nextWords == 0 then
-            current = keys[math.random(#keys)]
+            current = keys[math.random(1, #keys)]
             table.insert(output, current)
         else
-            local nextWord = nextWords[math.random(#nextWords)]
+            local nextWord = nextWords[math.random(1, #nextWords)]
             local wordOne, wordTwo = current:match("^(%S+)%s+(%S+)$")
             current = wordTwo .. " " .. nextWord
             table.insert(output, nextWord)
