@@ -136,6 +136,24 @@ function SWEP:StartTargetPanel(plyName)
     panel:SetSize(textW + padding * 2, textH + padding)
 
     self.PanelOpened = true
+
+    local owner = self:GetOwner()
+
+    panel.Think = function()
+        if not IsValid(owner) or not owner:Alive() then
+            panel:Remove()
+            self.PanelOpened = false
+            return
+        end
+
+        local wep = owner:GetActiveWeapon()
+
+        if not IsValid(wep) or wep:GetClass() != self:GetClass() then
+            self.PanelOpened = false
+            panel:Remove()
+            return
+        end
+    end
 end
 
 function SWEP:DrawHUD()
