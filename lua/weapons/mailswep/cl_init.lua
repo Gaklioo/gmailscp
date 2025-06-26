@@ -61,6 +61,7 @@ function SWEP:PrimaryAttack()
     end
 
     self.HasOpenedMenu = true
+    self.PanelOpened = false
     local maxWidth = ScrW() * 0.5
 
     timer.Simple(0.2, function()
@@ -146,9 +147,21 @@ function SWEP:StartTargetPanel(plyName)
             return
         end
 
+        if not self.PanelOpened then
+            panel:Remove()
+            self.PanelOpened = false
+            return
+        end
+
         local wep = owner:GetActiveWeapon()
 
-        if not IsValid(wep) or wep:GetClass() != self:GetClass() then
+        if not IsValid(wep) then
+            self.PanelOpened = false
+            panel:Remove()
+            return
+        end
+
+        if wep:GetClass() != self:GetClass() then
             self.PanelOpened = false
             panel:Remove()
             return
@@ -183,5 +196,6 @@ function SWEP:SecondaryAttack()
         self.WModel:Remove()
         self.WModel = nil
     end
+    self.PanelOpened = false
     self:DrawModel()
 end
