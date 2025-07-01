@@ -1,6 +1,6 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 3
+gMail.Cooldown = 300
 gMail.PlayerHurtTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.MailDespawnTime = 300
