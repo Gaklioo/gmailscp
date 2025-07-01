@@ -20,6 +20,7 @@ end
 
 function ENT:GetRandomPlayer(tryCount)
     if tryCount == 3 then
+        print("Could not find suitable player")
         return
     end
 
@@ -29,8 +30,11 @@ function ENT:GetRandomPlayer(tryCount)
     local num = 1
 
     for _, ply in player.Iterator() do
-
         if num == numberStoper then
+            if gMail.BlacklistedTeams[ply:Team()] then 
+                return self:GetRandomPlayer(tryCount + 1)
+            end
+                
             if IsValid(ply) then
                 self:SetNW2Entity("intendedPlayer", ply)
                 return
@@ -63,7 +67,11 @@ function ENT:Use(user)
     if IsValid(swep) then
         self:GetRandomPlayer(0)
         local intendedPlayer = self:GetNW2Entity("intendedPlayer")
-        if not IsValid(intendedPlayer) then return end
+        if not IsValid(intendedPlayer) then
+            vderma:CreateErrorPopup(user, "SCP-7573 Whisper", "There is no mail to be delivered today.")
+            user:StripWeapon("mailswep")
+            return 
+        end
         swep:SetNW2Entity("intendedPlayer", intendedPlayer)
     end
 

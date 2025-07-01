@@ -1,11 +1,19 @@
 gMail = gMail or {}
 
-gMail.Cooldown = 300
+gMail.Cooldown = 3
 gMail.PlayerHurtTime = 600
 gMail.PlayerAfflictionTime = 360
 gMail.MailDespawnTime = 300
 gMail.PlayerHurtTimerName = "gMailSCP_Affliction_KillPlayer"
 gMail.UseDarkRP = true
+
+--TEAM_CITIZEN is nil when server first loads until darkrp is done, same with all team data, so this fixes it
+hook.Add("DarkRPFinishedLoading", "gMailSCPSetupTeams", function()
+    gMail.BlacklistedTeams = {
+        [TEAM_CITIZEN] = true,
+        [TEAM_HOBO] = true,
+    }
+end)
 
 if SERVER then
     util.AddNetworkString("gMailSCP_ChangePlayerColor")
